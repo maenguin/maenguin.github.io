@@ -13,5 +13,10 @@ tags:
 
 hashMap to int[]
 ```java
-hashMap.entrySet().stream().map(s -> s.getKey()).sorted().mapToInt(value -> value).toArray()
+hashMap.entrySet()
+      .stream()
+      .map(s -> s.getKey())
+      .sorted()
+      .mapToInt(value -> value)
+      .toArray()
 ```
