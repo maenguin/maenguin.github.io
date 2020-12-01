@@ -15,10 +15,9 @@ tags:
 
 1. 스트림이용(속도가 느림)
 ```java
-collection
-      .stream()
-      .mapToInt(Integer::intValue)
-      .toArray()
+collection.stream()
+         .mapToInt(Integer::intValue)
+         .toArray()
 ```
 
 
@@ -26,7 +25,7 @@ collection
 ```java
 int[] answer = new int[size()];
 int index = 0;
-Iterator itor = set.iterator();
+Iterator itor = collection.iterator();
 while(itor.hasNext()){
     answer[index++] = (int)itor.next();
 }
