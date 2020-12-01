@@ -11,12 +11,25 @@ tags:
 
 ## 형변환
 
-hashMap to int[]
+int array로 반환해야 할때
+
+스트림이용(속도가 느림)
 ```java
-hashMap.entrySet()
+collection
       .stream()
-      .map(s -> s.getKey())
-      .sorted()
-      .mapToInt(value -> value)
+      .mapToInt(Integer::intValue)
       .toArray()
 ```
+
+iterator 이용
+```java
+int[] answer = new int[size()];
+int index = 0;
+Iterator itor = set.iterator();
+while(itor.hasNext()){
+    answer[index++] = (int)itor.next();
+}
+        
+```
+
+
