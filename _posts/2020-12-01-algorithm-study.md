@@ -11,9 +11,9 @@ tags:
 
 ## 형변환
 
-int array로 반환해야 할때
+### int array로 반환해야 할때
 
-스트림이용(속도가 느림)
+1. 스트림이용(속도가 느림)
 ```java
 collection
       .stream()
@@ -21,7 +21,7 @@ collection
       .toArray()
 ```
 
-iterator 이용
+2. iterator 이용
 ```java
 int[] answer = new int[size()];
 int index = 0;
