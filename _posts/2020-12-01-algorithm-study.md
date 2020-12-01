@@ -21,6 +21,7 @@ collection
       .toArray()
 ```
 
+
 2. iterator 이용
 ```java
 int[] answer = new int[size()];
@@ -29,7 +30,6 @@ Iterator itor = set.iterator();
 while(itor.hasNext()){
     answer[index++] = (int)itor.next();
 }
-        
 ```
 
 
