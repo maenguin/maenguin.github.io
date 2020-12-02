@@ -33,7 +33,7 @@ while(itor.hasNext()){
 
 ## 깔끔한 코드
 
-* switch말고 배열과 %
+* switch말고 배열과 % (programmers 2016년 문제)
 ```java
 String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
 String answer = dayofWeek[sumOfDays%7];
