@@ -51,7 +51,6 @@ substring(int beginIndex, int endIndex)
 //java는 endIndex로 길이를 정한다. 정확히는 endIndex 이전 index까지가 선택된다. 
 String text = "ABCDE";
 text.substring(1,4) // BCD
-
 ```
 
 ```c#
@@ -59,7 +58,6 @@ substring(int beginIndex, int length)
 //C#은 endIndex가 아니라 length를 받는다.
 string text = "ABCDE";
 text.substring(1,4) // BCDE
-
 ```
 
 
