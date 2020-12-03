@@ -53,8 +53,9 @@ String text = "ABCDE";
 text.substring(1,4) // BCD
 ```
 
-* C#은 두번째 파라미터로 endIndex가 아니라 length를 받는다.
-beginIndex를 포함하여 length까지의 데이터가 선택된다.
+**C#** 두번째 파라미터로 endIndex가 아니라 length를 받는다. beginIndex를 포함하여 length까지의 데이터가 선택된다.
+{: .notice}
+
 ```c#
 Substring(int beginIndex, int length)
 string text = "ABCDE";
