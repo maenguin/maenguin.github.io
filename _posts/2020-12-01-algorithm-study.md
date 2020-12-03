@@ -45,8 +45,9 @@ String answer = dayofWeek[sumOfDays%7];
 C#을 주로 사용했던터라 Java의 substring을 사용할때 실수를 하는 경우가 종종 있다.
 차이를 정리해보자
 
-* java는 두번쨰 파라미터로 endIndex를 받는다. 
-beginIndex부터 endIndex 이전 index까지의 데이터가 선택된다. 
+**java** 두번쨰 파라미터로 endIndex를 받는다. beginIndex부터 endIndex 이전 index까지의 데이터가 선택된다. 
+{: .notice}
+
 ```java
 substring(int beginIndex, int endIndex)
 String text = "ABCDE";
