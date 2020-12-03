@@ -39,6 +39,33 @@ String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
 String answer = dayofWeek[sumOfDays%7];
 ```
 
+## 헷갈리는 문법
+
+* substring
+C#을 주로 사용했던터라 Java의 substring을 사용할때 실수를 하는 경우가 종종 있다.
+차이를 정리해보자
+
+```java
+substring(int beginIndex, int endIndex)
+//java는 endIndex로 길이를 정한다. 정확히는 endIndex 이전 index까지가 선택된다. 
+String text = "ABCDE";
+text.substring(1,4) // BCD
+
+```
+
+```C#
+substring(int beginIndex, int length)
+//C#은 endIndex가 아니라 length를 받는다.
+string text = "ABCDE";
+text.substring(1,4) // BCDE
+
+```
+
+
+
+
+
+
 
 
 
