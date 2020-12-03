@@ -60,7 +60,15 @@ string text = "ABCDE";
 text.substring(1,4) // BCDE
 ```
 
+<div class="notice--primary" markdown="1">
+**/C#:** 두번째 파라미터로 endIndex가 아니라 length를 받는다.
 
+```c#
+substring(int beginIndex, int length)
+string text = "ABCDE";
+text.substring(1,4) // BCDE
+```
+</div>
 
 
 
