@@ -18,7 +18,7 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 locale                   : "ko-KR"
 title                    : "냥박스"
 title_separator          : "-"
-subtitle                 : "이것 저것 담아두는"# site tagline that appears below site title in masthead
+subtitle                 : "작은것 부터 하나씩 "# site tagline that appears below site title in masthead
 name                     : "maenguin"
 description              : "Hello World"
 url                      : "https://maenguin.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
