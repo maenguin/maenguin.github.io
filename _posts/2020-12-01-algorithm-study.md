@@ -54,7 +54,7 @@ text.substring(1,4) // BCD
 
 ```
 
-```C#
+```c#
 substring(int beginIndex, int length)
 //C#은 endIndex가 아니라 length를 받는다.
 string text = "ABCDE";
