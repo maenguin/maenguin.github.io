@@ -46,29 +46,21 @@ String answer = dayofWeek[sumOfDays%7];
 C#을 주로 사용했던터라 Java의 substring을 사용할때 실수를 하는 경우가 종종 있다.
 차이를 정리해보자
 
+java는 두번쨰 파라미터로 endIndex를 받는다. 정확히는 endIndex 이전 index까지가 선택된다. 
 ```java
 substring(int beginIndex, int endIndex)
-//java는 endIndex로 길이를 정한다. 정확히는 endIndex 이전 index까지가 선택된다. 
 String text = "ABCDE";
 text.substring(1,4) // BCD
 ```
 
-```c#
-substring(int beginIndex, int length)
-//C#은 endIndex가 아니라 length를 받는다.
-string text = "ABCDE";
-text.substring(1,4) // BCDE
-```
-
-<div class="notice--primary" markdown="1">
-**/C#:** 두번째 파라미터로 endIndex가 아니라 length를 받는다.
-
+C#은 두번째 파라미터로 endIndex가 아니라 length를 받는다.
 ```c#
 substring(int beginIndex, int length)
 string text = "ABCDE";
 text.substring(1,4) // BCDE
 ```
-</div>
+
+
 
 
 
