@@ -42,7 +42,6 @@ String answer = dayofWeek[sumOfDays%7];
 ## 헷갈리는 문법
 
 ### substring
-
 C#을 주로 사용했던터라 Java의 substring을 사용할때 실수를 하는 경우가 종종 있다.
 차이를 정리해보자
 
