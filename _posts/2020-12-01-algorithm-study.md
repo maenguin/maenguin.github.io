@@ -33,7 +33,7 @@ while(itor.hasNext()){
 
 ## 깔끔한 코드
 
-* switch말고 배열과 % 사용하기 (programmers '2016년' 문제) `commit 4d2df`
+* switch말고 배열과 % 사용하기 (programmers '2016년' 문제) [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
 ```java
 String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
 String answer = dayofWeek[sumOfDays%7];
