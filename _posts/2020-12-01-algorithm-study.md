@@ -39,6 +39,17 @@ String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
 String answer = dayofWeek[sumOfDays%7];
 ```
 
+* 두 정수 사이의 합
+수학의 등차수열의 합을 응용했다. 
+```java
+private long sumAtoB(long min, long max) {
+    return (max - min + 1) * (min + max) / 2;
+}
+
+//sumAtoB(3,5) : 12
+//sumAtoB(-5,-3) : -12
+```
+
 ## 헷갈리는 문법
 
 ### Substring
@@ -72,7 +83,7 @@ private long sum(int n){
     return n*(n+1)/2;
 }
 ```
-다음과 같이 long형으로 입력같을 받거나 코드 내부에서 명시적으로 바꾸어줘야된다.
+다음과 같이 long형으로 입력값을 받거나 코드 내부에서 명시적 변환을 해야한다.
 ```java
 private long sum(long n){
     return n*(n+1)/2;
