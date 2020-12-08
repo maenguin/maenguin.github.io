@@ -14,6 +14,7 @@ tags:
 ### int array로 반환해야 할때
 
 1. 스트림이용(속도가 느림)
+
 ```java
 collection.stream()
          .mapToInt(Integer::intValue)
@@ -22,6 +23,7 @@ collection.stream()
 
 
 2. iterator 이용
+
 ```java
 int[] answer = new int[size()];
 int index = 0;
@@ -34,6 +36,7 @@ while(itor.hasNext()){
 ## 깔끔한 코드
 
 * switch말고 배열과 % 사용하기 (programmers '2016년' 문제) [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
+
 ```java
 String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
 String answer = dayofWeek[sumOfDays%7];
