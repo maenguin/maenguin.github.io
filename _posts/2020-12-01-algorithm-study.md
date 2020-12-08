@@ -62,8 +62,22 @@ string text = "ABCDE";
 text.Substring(1,4) // BCDE
 ```
 
+## 실수
 
-
+### 
+다음과 같이 int 정수를 받아서 연산을 한 뒤에 long으로 값을 반환하는 함수가 있다.
+반환형식이 long이라 곱셉의 결과가 int를 넘어도 문제없을것 같지만 n이 int이기 때문에 곱셈 결과가 int를 넘어서면 잘못된 값이 반환된다.
+```java
+private long sum(int n){
+    return n*(n+1)/2;
+}
+```
+다음과 같이 long형으로 입력같을 받거나 코드 내부에서 명시적으로 바꾸어줘야된다.
+```java
+private long sum(long n){
+    return n*(n+1)/2;
+}
+```
 
 
 
