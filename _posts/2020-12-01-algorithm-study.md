@@ -40,6 +40,7 @@ String answer = dayofWeek[sumOfDays%7];
 ```
 
 * 두 정수 사이의 합 (programmers '두 정수 사이의 합' 문제)[`commit b88cd`](https://github.com/maenguin/Algorithm/commit/b88cd1c2e14f595610e540c6f8d77a6c80501796)
+
 수학의 등차수열의 합을 응용했다. 
 ```java
 private long sumAtoB(long min, long max) {
