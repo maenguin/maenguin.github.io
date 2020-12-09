@@ -69,7 +69,7 @@ String s1 = new String(charArray);
 
 ### Sort Desending String [`commit c1a6c`](https://github.com/maenguin/Algorithm/commit/c1a6c022e2537804d97749cb9fe73a095820d644)
 ```java
-Arrays.sort(charArray);
+Arrays.sort(s.toCharArray());
 new StringBuilder(String.valueOf(chars)).reverse().toString();
 ///
 String[] split = s.split("");
