@@ -6,7 +6,7 @@ tags:
   - 스프링
 ---
 
-## 스프링의 핵심 기능
+# 스프링의 핵심 기능
 
 IoC (Inversion of Control)
 :   제어의 역전, 리소스 관리 역할을 유저가 아닌 프레임워크에 위임했다는 뜻이다. DI를 통해 리소스를 사용할 수 있다.
@@ -16,6 +16,44 @@ DI (Dependency Injection)
 
 스프링 IoC Container
 :   애플리케이션 컴포넌트의 중앙 저장소, POJO 인스턴스(bean)을 구성하고 관리해준다.
+
+## 빈등록과 DI
+* 스프링 컨터이너에 빈을 등록할때 기본적으로 싱글톤으로 등록한다.
+* 스프링에서는 여러가지 빈 생성 방식과 주입 방법을 제공하는데 그 중에 대표적으로 사용되는 두가지가 있다. (xml도 있지만 잘 사용하지 않는다.)
+
+### ComponentScan & Autowired
+* POJO 클래스에 `@Component`를 붙이면 실행시 컴포넌트 스캔에 의해 빈이 자동으로 등록된다. (@Controller, @Service, @Repository도 있다.)
+* 등록된 빈을 `@Autowired`를 사용해 주입받을 수 있다. (생성자, 필드, setter 주입중 생성자 주입을 권장한다.)
+```java
+@Service
+public class AccountService {
+
+   private final AccountRepository accountRepository;
+
+   @Autowired
+   public AccountService(AccountRepository accountRepository) {
+       this.accountRepository = accountRepository;
+   }
+}
+```
+
+### Configration & Bean
+* `@Configration`을 통해 스프링에게 빈설정 파일임을 알려줄 수 있다.
+* `@Bean`을 붙인 메소드를 다음과 같이 작성하여 빈을 등록하면서 의존관계도 설정할 수 있다.
+
+```java
+@Configuration
+public class SpringConfig {
+   @Bean
+   public AccountService accountService() {
+      return new AccountService(accountRepository());
+   }
+   @Bean
+   public AccountRepository accountRepository() {
+      return new accountRepository();
+   }
+}
+```
 
 
 # 스프링 웹 개발
