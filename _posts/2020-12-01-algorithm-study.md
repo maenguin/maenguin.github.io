@@ -52,7 +52,7 @@ List<Integer> integerList2 = Arrays.asList(integerArray);
 int[] intArray = integerList.stream().mapToInt(Integer::intValue).toArray();
 ```
 
-### Integer[] to List<Integer>
+### List<Integer> to Integer[]
 
 ```java
 Integer[] integerArray = integerList.toArray(Integer[]::new);
