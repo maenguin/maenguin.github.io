@@ -25,11 +25,11 @@ DI (Dependency Injection)
 * API
 
 ## 정적 컨텐츠
-* resources:static 폴더에 파일을 넣고 웹서버로서의 역할을 하는 경우
+* resources:static 폴더에 파일을 넣고 웹서버로서의 역할을 할 수 있다.
 * resources:static/index.html이 존재하면 Welcompage로서 동작한다.
 
-## MVC와 템플릿 엔질
-* feemarker, thymeleaf등의 템플릿 엔진을 이용해 기존의 JSP와 같이 동적 컨텐츠를 생성하여 클라이언트에게 반환하는 경우이다.
+## MVC와 템플릿 엔진
+* feemarker, thymeleaf등의 템플릿 엔진을 이용해 기존의 JSP와 같이 동적 컨텐츠를 생성하여 클라이언트에게 반환할 수 있다.
 * 컨트롤러에서 문자열값을 반환하면 `ViewResolver`가 화면을 찾아서 처리한다.
 ```java
 @GetMapping("hello")
@@ -41,7 +41,7 @@ public String hello(Model model){
 
 
 ## API
-* 컨트롤러에 `@ResponseBody`를 사용하는 경우 `HttpMessageConverter`가 동작하여 Http Body에 데이터가 그대로 주입되어 클라이언트에게 반환되는 경우이다.
+* 컨트롤러에 `@ResponseBody`를 사용하는 경우 `HttpMessageConverter`가 동작하여 Http Body에 데이터가 그대로 주입되어 클라이언트에게 반환할 수 있다.
 * 문자열을 반환하면 StringConverter가 동작해 문자열을 반환한다.
 * 객체를 반환하면 기본적으로 JsonConverter가 동작해 Json 포맷형식으로 반환된다.
 ```java
