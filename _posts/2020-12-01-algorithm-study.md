@@ -33,6 +33,32 @@ while(itor.hasNext()){
 }
 ```
 
+### int[] to List<Integer>
+
+```java
+List<Integer> integerList = Arrays.stream(intArray).boxed().collect(Collectors.toList());
+```
+
+### Integer[] to List<Integer>
+
+```java
+List<Integer> integerList = Arrays.stream(integerArray).collect(Collectors.toList());
+List<Integer> integerList2 = Arrays.asList(integerArray);
+```
+
+### List<Integer> to int[]
+
+```java
+int[] intArray = integerList.stream().mapToInt(Integer::intValue).toArray();
+```
+
+### Integer[] to List<Integer>
+
+```java
+Integer[] integerArray = integerList.toArray(Integer[]::new);
+```
+
+
 ## 깔끔한 코드
 
 * switch말고 배열과 % 사용하기 (programmers '2016년' 문제) [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
