@@ -58,6 +58,29 @@ int[] intArray = integerList.stream().mapToInt(Integer::intValue).toArray();
 Integer[] integerArray = integerList.toArray(Integer[]::new);
 ```
 
+### char[] to String
+
+```java
+String s = String.valueOf(charArray);
+String s1 = new String(charArray);
+```
+
+## 정렬
+
+### Sort Desending String [`commit c1a6c`](https://github.com/maenguin/Algorithm/commit/c1a6c022e2537804d97749cb9fe73a095820d644)
+```java
+Arrays.sort(charArray);
+new StringBuilder(String.valueOf(chars)).reverse().toString();
+///
+String[] split = s.split("");
+Arrays.sort(split, Comparator.reverseOrder());
+return String.join("",split);
+///
+Arrays.stream(s.split("")).sorted(Comparator.reverseOrder()).collect(Collectors.joining());
+///
+s.chars().boxed().sorted(Collections.reverseOrder()).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+```
+
 
 ## 깔끔한 코드
 
