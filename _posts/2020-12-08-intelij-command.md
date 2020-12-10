@@ -33,3 +33,6 @@ tags:
 
 ## Ctrl + Alt + l
 코드 자동 정렬
+
+## Ctrl + Alt + n
+코드 인라인
