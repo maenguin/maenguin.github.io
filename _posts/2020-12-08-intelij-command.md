@@ -36,3 +36,12 @@ tags:
 
 ## Ctrl + Alt + n
 코드 인라인
+
+## Ctrl + Alt + Shift + s
+Project Structure
+
+## Ctrl + Alt + s
+Settings
+
+
+
