@@ -42,6 +42,25 @@ tags:
 * 옵션은 있을 수 도 있고 없을 수 도 있다.
 * 그래서 다트 게임 한세트의 정보 길이는 2 ~ 4로 유동적이다.
 * 옵션으로 * 이 나오면 이전 세트에 변화를 주어야 했다.
+문제를 처음 풀었을때는 우격다짐식으로 토큰화를 했다. 덕분에 코드가 길어지고 if else가 난무했다.
+카카오 리뷰를 보고 정규식으로 토큰화를 하면 괜찮겠다고 생각했다. 
+
+String.split()을 먼저 시도 했지만 원하는 결과가 나오지 않았다.
+```java
+String[] tokens = dartResult.split("(?=[0-9]|10)([SDT])([*#])?");
+//10이 들어가면 1과 0으로 분리되는 현상이 있었다.
+```java
+그래서 관련 내용을 찾아보다가 Pattern과 Matcher를 이용해 토큰화를 하게되었다.
+```java
+Pattern pattern = Pattern.compile("([0-9]|10)([SDT])([*#])?");
+Matcher matcher = pattern.matcher(dartResult);
+
+while (matcher.find()) {
+    String score = matcher.group(1);
+    String bonus = matcher.group(2);
+    String option = matcher.group(3); //없으면 null
+}
+```java
 
 
 # 기술
