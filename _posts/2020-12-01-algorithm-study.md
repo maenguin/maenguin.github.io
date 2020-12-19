@@ -45,12 +45,12 @@ tags:
 문제를 처음 풀었을때는 우격다짐식으로 토큰화를 했다. 덕분에 코드가 길어지고 if else가 난무했다.
 카카오 리뷰를 보고 정규식으로 토큰화를 하면 괜찮겠다고 생각했다. 
 
-String.split()을 먼저 시도 했지만 원하는 결과가 나오지 않았다.
+`String.split(String regex)`을 먼저 시도 했지만 원하는 결과가 나오지 않았다.
 ```java
 String[] tokens = dartResult.split("(?=[0-9]|10)([SDT])([*#])?");
 //10이 들어가면 1과 0으로 분리되는 현상이 있었다.
 ```
-그래서 관련 내용을 찾아보다가 Pattern과 Matcher를 이용해 토큰화를 하게되었다.
+그래서 관련 내용을 찾아보다가 `Pattern`과 `Matcher` 이용해 토큰화를 성공할 수 있었다.
 ```java
 Pattern pattern = Pattern.compile("([0-9]|10)([SDT])([*#])?");
 Matcher matcher = pattern.matcher(dartResult);
