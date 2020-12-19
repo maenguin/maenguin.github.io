@@ -60,7 +60,7 @@ while (matcher.find()) {
     String bonus = matcher.group(2);
     String option = matcher.group(3); //없으면 null
 }
-```java
+```
 
 
 # 기술
