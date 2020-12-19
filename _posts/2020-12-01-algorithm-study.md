@@ -35,7 +35,7 @@ tags:
 실무에서는 어떻게 사용할지 궁금하다.
 
 
-## 카카오 다트 게임
+## 카카오 다트 게임 [`commit 07c31`](https://github.com/maenguin/Algorithm/commit/07c314561c29136f284fb457ea3d9340cade6f1d)
 문자열 처리(String Manipulation) 문제였다.
 문자열의 문자를 하나하나씩 처리하는걸 생각했지만 조건이 여러개라 구현하는데 어려움을 겪었다.
 * 점수가 1 ~ 10 이기 때문에 10 나오면 문자 하나로 숫자를 판별할 수 없다.
