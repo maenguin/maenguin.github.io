@@ -34,9 +34,9 @@ tags:
 스트림을 사용해서 문제를 풀때면 항상 성능적인 부분에 대해 고민하게 된다.
 실무에서는 어떻게 사용할지 궁금하다.
 
+## 문자열 처리 문제 (String Manipulation)
 
-## 카카오 다트 게임 [`commit 07c31`](https://github.com/maenguin/Algorithm/commit/07c314561c29136f284fb457ea3d9340cade6f1d)
-문자열 처리(String Manipulation) 문제였다.
+### 카카오 다트 게임 [`commit 07c31`](https://github.com/maenguin/Algorithm/commit/07c314561c29136f284fb457ea3d9340cade6f1d)
 문자열의 문자를 하나하나씩 처리하는걸 생각했지만 조건이 여러개라 구현하는데 어려움을 겪었다.
 * 점수가 1 ~ 10 이기 때문에 10 나오면 문자 하나로 숫자를 판별할 수 없다.
 * 옵션은 있을 수 도 있고 없을 수 도 있다.
@@ -61,6 +61,35 @@ while (matcher.find()) {
     String bonus = matcher.group(2);
     String option = matcher.group(3); //없으면 null
 }
+```
+
+### 문자열 압축 [`commit b4be3`](https://github.com/maenguin/Algorithm/commit/b4be32543a8b5ecbfe514fb33f6c1b0886c10d82)
+주어진 문자열을 n개 별로 잘라서 압축했을때 최소 길이를 구하는 문제였다.
+
+* substring으로 문자열 i개씩 자르기
+```java
+for (int i = 1; i <= length/2; i++) {
+    for (int j = 0; j < length; j += i) {
+        String sub = s.substring(j, Math.min(j + i, length));
+    }
+}
+```
+* 정규식으로 문자열 i개씩 자르기
+```java
+for (int i = 1; i <= length/2; i++) {
+    String[] split = s.split("(?<=\\G.{" + i + "})");
+}
+```
+
+### 핸드폰 번호 가리기 [`commit 71924`](https://github.com/maenguin/Algorithm/commit/71924947b8564a1f7074f2d7ee0d6bf478014702)
+핸드폰 번호의 뒤 4자리를 \*로 가리는 문제였다. java의 replaceAll과 정규 표현식을 사용했다.
+```java
+phone_number.replaceAll(".(?=.{4})","*");
+
+//번외 후방탐색 앞 4자리 남기고 * 치환
+phone_number.replaceAll("(?<=.{4}).","*");
+//번외 가운데 번호 * 치환
+phone_number.replaceAll("(?<=.2|.{3}).(?=.{4})","*");
 ```
 
 ## 멀쩡한 사각형 [`commit 2d8a7`](https://github.com/maenguin/Algorithm/commit/2d8a74e35e2abdbc3add297462ff77cf3ba9498d)
