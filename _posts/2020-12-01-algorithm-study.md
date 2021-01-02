@@ -241,7 +241,7 @@ private long sum(long n){
 }
 ```
 
-## 테마 [보여지는 텍스트](#BFS/DFS)
+## 테마 [보여지는 텍스트](#실수)
 
 ### 문자열 처리 (String Manipulation)
 
