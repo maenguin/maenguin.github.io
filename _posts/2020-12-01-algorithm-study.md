@@ -180,26 +180,6 @@ return s.chars().boxed().sorted(Collections.reverseOrder())
 ```
 
 
-## 깔끔한 코드
-
-* switch말고 배열과 % 사용하기 (programmers '2016년' 문제) [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
-
-```java
-String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
-String answer = dayofWeek[sumOfDays%7];
-```
-
-* 두 정수 사이의 합 (programmers '두 정수 사이의 합' 문제)[`commit b88cd`](https://github.com/maenguin/Algorithm/commit/b88cd1c2e14f595610e540c6f8d77a6c80501796)
-
-수학의 등차수열의 합을 응용했다. 
-```java
-private long sumAtoB(long min, long max) {
-    return (max - min + 1) * (min + max) / 2;
-}
-
-//sumAtoB(3,5) : 12
-//sumAtoB(-5,-3) : -12
-```
 
 ## 헷갈리는 문법
 
@@ -241,9 +221,10 @@ private long sum(long n){
 }
 ```
 
-## 테마 [보여지는 텍스트](#카카오-다트-게임-commit-07c31)
+## 기억해두면 좋은 코드
 
 ### 문자열 처리 (String Manipulation)
+## Regex
 
 ### 완전 탐색 (String Manipulation)
 
@@ -253,7 +234,25 @@ private long sum(long n){
 #### Permutation
 #### BFS/DFS
 
+### 그외
 
+* switch말고 배열과 % 사용하기 (programmers '2016년' 문제) [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
 
+```java
+String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
+String answer = dayofWeek[sumOfDays%7];
+```
+
+* 두 정수 사이의 합 (programmers '두 정수 사이의 합' 문제)[`commit b88cd`](https://github.com/maenguin/Algorithm/commit/b88cd1c2e14f595610e540c6f8d77a6c80501796)
+
+수학의 등차수열의 합을 응용했다. 
+```java
+private long sumAtoB(long min, long max) {
+    return (max - min + 1) * (min + max) / 2;
+}
+
+//sumAtoB(3,5) : 12
+//sumAtoB(-5,-3) : -12
+```
 
 
