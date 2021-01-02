@@ -241,7 +241,7 @@ private long sum(long n){
 }
 ```
 
-## 테마 [보여지는 텍스트](#카카오 다트 게임)
+## 테마 [보여지는 텍스트](#형변환)
 
 ### 문자열 처리 (String Manipulation)
 
