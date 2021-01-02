@@ -26,7 +26,7 @@ tags:
 String[] tokens = dartResult.split("(?=[0-9]|10)([SDT])([*#])?");
 //10이 들어가면 1과 0으로 분리되는 현상이 있었다.
 ```
-그래서 관련 내용을 찾아보다가 [`Pattern`과 `Matcher` 이용해 토큰화를 성공할 수 있었다.][#토큰화-하기]
+그래서 관련 내용을 찾아보다가 `Pattern`과 `Matcher` 이용해 [토큰화를 성공할 수 있었다.][#토큰화-하기]
 
 
 ## 문자열 압축 [`commit b4be3`](https://github.com/maenguin/Algorithm/commit/b4be32543a8b5ecbfe514fb33f6c1b0886c10d82)
