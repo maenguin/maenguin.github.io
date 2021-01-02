@@ -240,14 +240,14 @@ for (int i = 1; i <= length/2; i++) {
 
 ### 그외
 
-* switch말고 배열과 % 사용하기 (programmers '2016년' 문제) [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
+#### switch말고 배열과 % 사용하기 [`commit 4d2df`](https://github.com/maenguin/Algorithm/commit/4d2dfd3ccb792f3af604602d4d1b62a6af8b25d4)
 
 ```java
 String[] dayofWeek = {"THU","FRI","SAT","SUN","MON","TUE","WED"};
 String answer = dayofWeek[sumOfDays%7];
 ```
 
-* 두 정수 사이의 합 (programmers '두 정수 사이의 합' 문제)[`commit b88cd`](https://github.com/maenguin/Algorithm/commit/b88cd1c2e14f595610e540c6f8d77a6c80501796)
+#### 두 정수 사이의 합 [`commit b88cd`](https://github.com/maenguin/Algorithm/commit/b88cd1c2e14f595610e540c6f8d77a6c80501796)
 
 수학의 등차수열의 합을 응용했다. 
 ```java
