@@ -241,7 +241,7 @@ private long sum(long n){
 }
 ```
 
-## 테마 [보여지는 텍스트](#카카오 다트 게임 [`commit 07c31`])
+## 테마 [보여지는 텍스트](#카카오 다트 게임 [`commit 07c31`](https://github.com/maenguin/Algorithm/commit/07c314561c29136f284fb457ea3d9340cade6f1d))
 
 ### 문자열 처리 (String Manipulation)
 
