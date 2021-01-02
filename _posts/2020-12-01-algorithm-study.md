@@ -241,7 +241,7 @@ private long sum(long n){
 }
 ```
 
-## 테마 [보여지는 텍스트](#문자열 처리 문제)
+## 테마 [보여지는 텍스트](#문자열-처리-문제)
 
 ### 문자열 처리 (String Manipulation)
 
