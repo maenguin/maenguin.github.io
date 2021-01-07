@@ -256,7 +256,7 @@ for (int i = 0; i < arr.length - 1; i++) {
 경우의 수를 구하는것은 대표적으로 순열을 예로 들 수 있다.  
   
 swap과 backtracking을 이용해 구현한 순열 코드  
-순서를 보장받지 못한다.
+ 보장받지는 못한다.
 ```java
 void unstablePermutation(int[] arr, int n, int r, int depth) {
     if (depth == r) {
@@ -271,7 +271,7 @@ void unstablePermutation(int[] arr, int n, int r, int depth) {
     }
 }
 ```
-#### combination
+#### Combination
 모든 경우의 수에서 순서는 신경쓰지 않아도 될때가 있다.  
 그때는 조합을 사용한다.  
   
@@ -284,7 +284,7 @@ void combination(int[] arr, boolean[] visited, int n, int r, int start) {
     }
     for (int i = start; i < n; i++) {
         visited[i] = true;
-        combination(arr, visited, n, r-1, i + 1);
+        combination(arr, visited, n, r - 1, i + 1);
         visited[i] = false;
     }
 }
