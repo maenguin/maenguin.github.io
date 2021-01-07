@@ -272,7 +272,23 @@ void unstablePermutation(int[] arr, int n, int r, int depth) {
 }
 ```
 #### combination
-
+모든 경우의 수에서 순서는 신경쓰지 않아도 될때가 있다.  
+그때는 조합을 사용한다.  
+  
+backtracking을 이용해 구현된 조합 코드
+```java
+void combination(int[] arr, boolean[] visited, int n, int r, int start) {
+    if (r == 0) {
+        print(arr, visited, n); //visited된 원소만 출력
+        return;
+    }
+    for (int i = start; i < n; i++) {
+        visited[i] = true;
+        combination(arr, visited, n, r-1, i + 1);
+        visited[i] = false;
+    }
+}
+```
 #### Bit Mask
 #### Recursive Function
 
