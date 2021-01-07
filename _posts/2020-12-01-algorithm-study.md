@@ -230,13 +230,49 @@ for (int i = 1; i <= length/2; i++) {
 ```
 
 
-### 완전 탐색 (String Manipulation)
+### 완전 탐색  
+가능한 모든 경우의 수를 탐색해 문제를 해결하는 방법이다.  
+효율과는 거리가 먼 방법이지만 직관적으로 빠르게 문제를 해결할 수 있다는 장점이 있다.  
+완전 탐색을 구현하는 방법에도 여러가지가 있는데, 예를 들면 다음과 같다. 
+  
+  
+#### Brute Force  
+for문과 if를 이용해 탐색  
+```java
+//예시 1 : 리그제 처럼 각 원소들 끼리 한번씩 비교하는 코드
+for (int i = 0; i < arr.length - 1; i++) {
+    for (int j = i; j < arr.length; j++) {
+        var a = arr[i];
+        var b = arr[j];
+        //... a b 비교
+    }
+}
+```
+#### BFS/DFS
+#### Back Tracking
+#### Permutation
+경우의 수를 구하는것은 대표적으로 순열을 예로 들 수 있다.  
+  
+swap과 backtracking을 이용해 구현한 순열 코드  
+순서를 보장받지 못한다.
+```java
+void unstablePermutation(int[] arr, int n, int r, int depth) {
+    if (depth == r) {
+        print(arr, r); // 0 부터 r개 출력
+        return;
+    }
 
-#### Brute Force
+    for (int i = depth; i < n; i++) {
+        swap(arr, depth, i);
+        perm(arr, n, r, depth + 1);
+        swap(arr, depth, i);
+    }
+}
+```
 #### Bit Mask
 #### Recursive Function
-#### Permutation
-#### BFS/DFS
+
+
 
 ### 그외
 
