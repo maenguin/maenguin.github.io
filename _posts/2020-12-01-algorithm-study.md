@@ -68,6 +68,10 @@ String[] tokens = dartResult.split("(?=[0-9]|10)([SDT])([*#])?");
 문제를 풀고 나서야 격자칸의 개수는 가로길이 + 세로길이 - 가로와 세로의 최대공약수 인것을 알게되었다.
 문제를 처음보았을때 당황하지 않고 그림을 ppt등 이용해 그려서 규칙을 도출해내었다면 쉽게 풀 수 있었을것 같다.  
   
+### 가장 큰 수 [`commit cda1f`](https://github.com/maenguin/Algorithm/commit/cda1f20501ed2e0df5eb76c9c66ca69f99d3a2b5)
+주어진 숫자 조합으로 가장 큰 수를 만들어내는 문제였다.  
+예전에 문제를 풀다가 못풀고 포기한적이 있었는데 이번에는 아이디어가 떠올라서 풀 수 있었다.  
+풀면서 [Compartor에 대한 지식](#역순-정렬-하기)이 늘어난것 같다.
 ***
 
 # 기술
@@ -189,6 +193,15 @@ private long sum(long n){
 ```
 
 ## 기억해두면 좋은 코드
+### 정렬
+#### 역순 정렬 하기
+내장 compare 함수를 사용해 역정렬을 하고 싶을때는 아래 두가지 중 하나를 사용하면 된다.
+```java
+(o1, o2) -> o2.compareTo(o1)
+```
+```java
+(o1, o2) -> -o1.compareTo(o2)
+```
 
 ### 문자열 처리 (String Manipulation)
 #### 토큰화 하기
