@@ -134,3 +134,124 @@ member2.setAddress(address);
 //member1.getAddress().setCity("city2");  
 member1.setAddress(new Address("city2", address.getStree(), address.getZipcode()));
 ```
+
+## 값 타입 비교
+값 타입은 인스턴스가 달라도 그 안에 값이 같으면 같은 것으로 봐야한다.  
+`== 의 경우 동일성 비교`로서 인스턴스의 참조 값을 비교한다.  
+`equals()의 경우 동등성 비교`로서 인스턴스의 값을 비교한다.  
+그러므로 값 타입은 **equals()를 사용해서 동등성 비교를 해야한다.**  
+  
+다음과 같이 equals() 메소드를 적절하게 재정의 해서 사용한다.  
+```java
+@Embeddable
+@Getter
+public class Address {
+
+    private String city;
+    private String street;
+    private String zipcode;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(zipcode, address.zipcode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(city, street, zipcode);
+    }
+}
+```
+
+## 값 타입 컬렉션
+값 타입이 한 두개가 아니라 정말 여러개 일때는 `값 타입 컬렉션`이라는것을 사용할 수 있다.  
+데이터베이스는 컬렉션을 같은 테이블에 저장할 수 없기 때문에 별도의 테이블이 필요하다.  
+  
+`@ElementCollection`과 `@CollectionTable`을 사용해서 만들 수 있다.  
+```java
+@ElementCollection
+@CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+@Column(name = "FOOD_NAME") //컬렉션이 단일 기본 값타입 하나 이므로 예외적으로 @Column사용가능
+private Set<String> favoriteFood = new HashSet<>();
+
+@ElementCollection
+@CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+private List<Address> addressHistory = new ArrayList<>();
+```
+
+### 값 타입 컬렉션의 사용
+값 타입 컬렉션은 `영속성 전이 + 고아 객체 제거`를 설정 한것 처럼 동작 한다.  
+* 저장  
+  ```java
+  Member member = new Member();
+  
+  member.getFavoriteFoods().add("치킨");
+  member.getFavoriteFoods().add("족발");
+  member.getFavoriteFoods().add("피자");
+  
+  member.getAddressHistory().add(new Address("city1", street1", "zipcode1"));
+  member.getAddressHistory().add(new Address("city2", street2", "zipcode2"));
+  
+  //member만 persist해도 FAVORITE_FOOD 테이블과 ADDRESS 테이블에 INSET가 나간다.
+  em.perist(member);
+  ```
+* 조회
+  ```java
+  //..
+  
+  //값 타입 컬렉션은 기본이 지연로딩이기 때문에 Member 데이터만 가져온다.
+  em.find(Member.class, member.getId());
+  ```
+* 수정
+  ```java
+  //..
+  Member findMember = em.find(Member.class, member.getId());
+  findMember.getFavoriteFoods().remove("치킨");
+  findMember.getFavoriteFoods().add("한식");
+  ```
+  ```java
+  //..
+  //remove는 내부적으로 hashcode를 이용하기 때문에 아래 코드로도 동작한다.
+  findMember.getAddressHistory().remove(new Address("city1", street1", "zipcode1"));
+  findMember.getAddressHistory().add(new Address("newcity1", street1", "zipcode1"));
+  //잘 되긴 하는데 값을 모두 제거하고 컬렉션에 있는 값을 다시 저장한다!
+  ```
+### 값 타입 컬렉션의 제약사항
+* 값 타입은 엔티티와 다르게 식별자 개념이 없다.  
+* 값은 변경하면 추적이 어렵다
+* 값 타입 컬렉션에 변경 사항이 발생하면, 주인 엔티티와 연관된 모든 데이터를 삭제하고,  
+  값 타입 컬렉션에 있는 현재 값을 모두 다시 저장한다.  
+* 값 타입 컬렉션을 매핑하는 테이블은 모든 컬럼을 묶어서 기본키를 구해성해야 한다 => null x, 중복 저장 x  
+### 값 타입 컬렉션 대안
+**값 타입 컬렉션 대신 일대다 관계를 고려**  
+1. 일대다 관계를 위한 엔티티를 만들고 여기에 값 타입을 사용  
+2. 영속성 전이와 고아 객체 제거를 사용해서 값 타입 컬렉션 처럼 사용  
+```java
+@Entity
+public class AddressEntity {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private Address address;
+}
+```
+```java
+@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+@JoinColumn(name = "MEMBER_ID")
+private List<AddressEntity> addressHistory = new ArrayList<>();
+```
+
+
+  
+  
+  
+  
+  
+  
