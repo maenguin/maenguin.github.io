@@ -69,6 +69,7 @@ public class Member extends BaseEntity {
 ```
 > @Embeddable과 @Embedded 중 하나만 표시 해도 되지만  
 둘다 명시하는걸 권장  
+
 > 임베디드 타입의 값이 null이면 매핑한 컬럼 값도 모두 null이 된다.  
 
 ### 임베디드 타입의 장점
@@ -111,6 +112,25 @@ public class Member extends BaseEntity {
 }
 ```
 
+## 값 타입과 불변 객체
+앞서 보았듯이 기본 값 타입은 공유가 불가능 하고 가능한 경우라도 불변이기 때문에 안전하다.  
+하지만 임베디드 타입은 값 타입이지만 객체이므로 공유가 가능하면서 변경이 가능하다.  
+```java
+Address address = new Address("city1", "street1", "zipcode1");
+member1.setAddress(address);
+member2.setAddress(address);
 
+//member1의 city만 바꾸려고 했지만 member2의 city값도 바뀌어 버린다.
+member1.getAddress().setCity("city2");
+```
+그렇기 때문에 값을 복사해서 사용해야 되지만 코드적으로 실수할 가능성이 있다.  
+그러므로 자바의 String처럼 **불변 객체(immutable object)로 설계해야한다.**
+```java
+Address address = new Address("city1", "street1", "zipcode1");
+member1.setAddress(address);
+member2.setAddress(address);
 
-
+//불변객체를 만드는 방법은 여러가지가 있으나 여기서는 setter를 없애고 생성자에서만 초기화 할 수 있도록 했다.
+//member1.getAddress().setCity("city2");  
+member1.setAddress(new Address("city2", address.getStree(), address.getZipcode()));
+```
