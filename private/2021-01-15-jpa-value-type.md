@@ -69,6 +69,7 @@ public class Member extends BaseEntity {
 ```
 > @Embeddable과 @Embedded 중 하나만 표시 해도 되지만  
 둘다 명시하는걸 권장  
+> 임베디드 타입의 값이 null이면 매핑한 컬럼 값도 모두 null이 된다.  
 
 ### 임베디드 타입의 장점
 * 재사용  
@@ -82,6 +83,33 @@ public class Member extends BaseEntity {
 * 객체와 테이블을 아주 세밀하게(find-grained) 매핑하는 것이 가능  
 * 잘 설계한 ORM 애플리케이션은 매핑한 테이블의 수보다 클래스의 수가 더많음  
 
+### @AttributeOverride: 속성 재정의
+한 엔티티에서 같은 값 타입을 사용하면 컬럼 명이 중복된다.  
+`@AttributeOverrides`와 `@AttributeOverride`를 사용해서 컬럼명 속성을 재정의 할 수 있다.  
+```java
+@Entity
+public class Member extends BaseEntity {
+
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
+    private Long id;
+
+    private String name;
+
+    @Embedded
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="city", column=@Column("WORK_CITY")),
+            @AttributeOverride(name="street", column=@Column("WORK_STREET")),
+            @AttributeOverride(name="zipcode", column=@Column("WORK_ZIPCODE"))
+     })
+    private Address workAddress;
+    
+    //..
+}
+```
 
 
 
