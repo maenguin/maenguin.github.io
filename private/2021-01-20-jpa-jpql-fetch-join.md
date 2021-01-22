@@ -197,9 +197,9 @@ for(Member member : members) {
   ```
   설정한 배치 사이즈 만큼 Order를 한번에 불러온다.
   ```sql
-      select  o.*, 
-      from    orders o 
-      where   orders.member_id in ( batch size 이내 )
+  select  o.*, 
+  from    orders o 
+  where   orders.member_id in ( batch size 이내 )
   ```
 
 
