@@ -80,5 +80,12 @@ Order와 연관된 Member까지 쿼리 한번으로 가져와서 Order 타입으
 * 사용법  
   [ left [outer] | inner ] join fetch 조인경로 
 
+## 컬렉션 페치 조인
+다대일뿐만 아니라 일대다도 페치 조인을 사용할 수 있다.  
+[JPQL]
+```sql
+select o, m FROM Order o join o.member m").getResultList();
+```
+
 
 
