@@ -188,12 +188,12 @@ for(Member member : members) {
   ```
   하지만 이때 배치사이즈를 다음과 같이 설정하면
   ```
-  * 글로벌
-    hibernate.default_batch_fetch_size = 보통 1000이하의 값
-  * 지정  
-    @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+  [글로벌]
+  hibernate.default_batch_fetch_size = 보통 1000이하의 값
+  [지정]
+  @BatchSize(size = 100)
+  @OneToMany(mappedBy = "member")
+  private List<Order> orders = new ArrayList<>();
   ```
   설정한 배치 사이즈 만큼 Order를 한번에 불러온다.
   ```sql
