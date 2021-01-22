@@ -93,6 +93,20 @@ em.createNamedQuery("Member.findByName", Member.class)
   .setParameter("name", "회원1")
   .getResultList();
 ```
-> 스프링 데이터 JPA에서는 @Query를 통해 Repository 인터페이스에서 더 깔끔하게 네임드쿼리르 사용할 수 있다.  
+> 스프링 데이터 JPA에서는 @Query를 통해 Repository 인터페이스에서 더 깔끔하게 네임드쿼리를 사용할 수 있다.  
+
+## 벌크 연산
+모든 Member의 나이를 20으로 바꿔야 된다고 가정해보자  
+JPA 변경 감지 기능으로 해결하려면 너무 많은 SQL이 실행된다.  
+그래서 JPA는 **한번의 쿼리로 여러 테이블의 로우를 변경**할 수 있는 기능을 제공한다.  
+
+### executeUpdate()
+* update, delete 지원
+* 하이버네이트에서는 insert into..select 지원
+```java
+int resultCount = em.createQuery("update Member p set m.age = 20", Member.class)
+                    .executeUpdate(); //업데이트 된 엔티티의 수를 반환한다.
+```
+
 
 
