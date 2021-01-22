@@ -75,7 +75,7 @@ Order와 연관된 Member까지 쿼리 한번으로 가져와서 Order 타입으
 
 ## 페치 조인이란  
 * 연관된 엔티티나 컬렉션을 **SQL 한번에 함께 조회**하는 기능
-* JPQL에서 **성능 최적화**를 위해 제공하는 기능
+* JPQL에서 **성능 최적화**를 위해 제공
 * SQL 조인 종류는 아니고 JPQL고유의 기능
 * 사용법  
   [ left [outer] | inner ] join fetch 조인경로 
@@ -120,7 +120,7 @@ for(Member member : members) {
 */
 ```
 ## 페치 조인과 DISTINCT
-일대다 페치조인시 중복된 결과를 제거하기 위해 JPQL에서도 DISTINCT 명령어를 제공한다.  
+일대다 페치조인시 중복된 결과를 제거하기 위해 JPQL에서도 `DISTINCT` 명령어를 제공한다.  
 JPQL의 DISTINCT는 2가지 기능을 제공
 1. SQL에 DISTINCT를 추가
 2. 애플리케이션에서 엔티티 중복 제거
@@ -152,11 +152,49 @@ for(Member member : members) {
 -> 주문4 Order@0x600
 */
 ```
+
 ## 페치 조인과 일반 조인의 차이
 * JPQL에서의 조인도 결과를 반환할 때 연관관계를 고려하지 않음
 * 단지 select 절에 짖어한 엔티티만 조회
 * 페치 조인을 사용하면 연관된 엔티티도 함께 조회함(즉시 로딩)
 * **페치 조인은 객체 그래프를 SQL 한번에 조회하는 개념**
 
+## 페치 조인의 특징과 한계
+* **페치 조인 대상에는 별칭을 줄 수 없다.**  
+  JPA 설계사상에서 객체그래프를 탐색한다는 것은 연관된 객체 전부를 가져온다는 전제를 가지고 있다.  
+  아래 코드와 같이 별칭을 줘서 Order를 전부 가져오지 않고 걸러서 가져온다면 데이터 정합성에 문제가 발생할 수 있다.
+  ```java
+  //하이버네이트는 별칭가능
+  em.createQuery("select m FROM Member m join fetch m.orders o where o.price > 1000", Member.class).getResultList();
+  //이렇게 페치 조인을 여러단계로 해야되는 경우를 제외하고는 페치 조인 대상의 별칭은 사용하지 않는게 좋다.
+  em.createQuery("select m FROM Member m join fetch m.orders o join fetch o.delivery ", Member.class).getResultList();
+  ```
+* **둘 이상의 컬렉션은 페치 조인 할 수 없다.**  
+  일대다의 데이터 부풀리기 처럼 더 많은 부풀리기가 발생해서 정합성 문제가 발생할 수 있다.  
+* **컬렉션을 페치 조인하면 페이징 API를 사용할 수 없다.**
+  일대일, 다대일 같은 단일 값 연관 필드들은 페치 조인을 해도 페이징이 가능하다.  
+  하지만 다대일의 경우 데이터 부풀림 때문에 페이징시 의도와는 다르게 동작할 수 있다.  
+  하이버네이트의 경우 경고 로그를 남기고 데이터 전부 불러온뒤에 메모리에서 페이징한다.  
+
+### 컬렉션 패치 조인 해결방법
+* **일대다를 다대일로 뒤집어서 페이징을 수행한다.**
+* **배치사이즈 기능을 이용한다.**  
+  아래의 코드를 실행하면 페치 조인이 없기 때문에 N+1문제가 발생된다.  
+  ```java
+  em.createQuery("select m FROM Member m", Member.class)
+    .setFirstResult(0)
+    .setMaxResults(5)
+    .getResultList();
+  ```
+  하지만 이때 배치사이즈를 다음과 같이 설정하면
+  ```
+  * 글로벌
+    hibernate.default_batch_fetch_size = 보통 1000이하의 값
+  * 지정  
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
+  ```
+  
 
 
