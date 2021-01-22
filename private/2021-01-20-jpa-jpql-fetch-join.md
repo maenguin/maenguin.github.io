@@ -171,7 +171,7 @@ for(Member member : members) {
   ```
 * **둘 이상의 컬렉션은 페치 조인 할 수 없다.**  
   일대다의 데이터 부풀리기 처럼 더 많은 부풀리기가 발생해서 정합성 문제가 발생할 수 있다.  
-* **컬렉션을 페치 조인하면 페이징 API를 사용할 수 없다.**
+* **컬렉션을 페치 조인하면 페이징 API를 사용할 수 없다.**  
   일대일, 다대일 같은 단일 값 연관 필드들은 페치 조인을 해도 페이징이 가능하다.  
   하지만 다대일의 경우 데이터 부풀림 때문에 페이징시 의도와는 다르게 동작할 수 있다.  
   하이버네이트의 경우 경고 로그를 남기고 데이터 전부 불러온뒤에 메모리에서 페이징한다.  
@@ -195,6 +195,11 @@ for(Member member : members) {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
   ```
-  
+  설정한 배치 사이즈 만큼 Order를 한번에 불러온다.
+  ```sql
+      select  o.*, 
+      from    orders o 
+      where   orders.member_id in ( batch size 이내 )
+  ```
 
 
