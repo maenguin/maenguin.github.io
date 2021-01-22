@@ -57,7 +57,7 @@ where  m.id = ?
 ```  
   
 외래키의 경우
-```sql
+```jpql
 [JPQL]
 select m from Member m where m.team.id = :teamId  (엔티티의 id 사용)
 select m from Member m where m.team = :team       (엔티티 직접 사용)
