@@ -79,6 +79,7 @@ where  m.team_id = ?
 * **애플리케이션 로딩 시점에 쿼리를 검증**
   SQL 오류를 방지하는데 굉장히 효과적
 
+### @NamedQuery & em.createNamedQuery()
 ```java
 @Entity
 @NamedQuery(
@@ -107,6 +108,16 @@ JPA 변경 감지 기능으로 해결하려면 너무 많은 SQL이 실행된다
 int resultCount = em.createQuery("update Member p set m.age = 20", Member.class)
                     .executeUpdate(); //업데이트 된 엔티티의 수를 반환한다.
 ```
+### 벌크 연산 주의사항
+벌크 연산은 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리한다.  
+그렇기 때문에 영속성 컨텍스트와 실제 데이터베이스 사이의 데이터 정합성 문제가 발생할 수 있다.  
+그렇기 때문에  
+* 영속성 컨텍스트에 엔티티가 들어가기전에 벌크 연산을 먼저 수행하거나
+* 벌크 연산 수행 후 영속성 컨텍스트를 초기화
+
+
+
+
 
 
 
