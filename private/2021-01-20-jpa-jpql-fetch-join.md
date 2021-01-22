@@ -82,6 +82,8 @@ Order와 연관된 Member까지 쿼리 한번으로 가져와서 Order 타입으
 
 ## 컬렉션 페치 조인
 다대일뿐만 아니라 일대다도 페치 조인을 사용할 수 있다.  
+  
+양방향 연관관계가 설정되어 있다 가정하고 Member를 가져올때 연관된 Order 목록들을 가져오도록 해보자
 ```java
 List<Member> members = em.createQuery("select m FROM Member m join fetch m.orders", Member.class).getResultList();
 ```
@@ -94,6 +96,7 @@ from   member m
 ```
 데이터베이스에 날려진 SQL을 보면 이상없이 데이터를 가져온것 같지만 한가지 주의사항이 있다.  
 일대다 조인시에는 **데이터가 부풀려지기 때문에 Member 컬렉션에 담는 과정에서 동일한 값이 들어갈 수 있다.**  
+Member를 기준으로 조인을 걸게되면 아래 결과 테이블 처럼 연관된 Order 만큼 Member 튜플이 생성이 되는걸 볼 수 있다.  
 |id|name|id|member_id|name|
 |:---:|:---:|:---:|:---:|:---:|
 |1|회원1|1|1|주문1|
