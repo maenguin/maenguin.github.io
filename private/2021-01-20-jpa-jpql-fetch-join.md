@@ -1,8 +1,6 @@
-# 객체지향 쿼리 언어 (JPQL)
+# 페치 조인 (fetch join)
 
-## 페치 조인 (fetch join)
-
-### 연관된 엔티티나 컬렉션을 SQL 한번에 가져오고 싶다
+## 연관된 엔티티나 컬렉션을 SQL 한번에 가져오고 싶다
 다대일 관계인 Order과 Member 엔티티가 있다고 하자.  
 Order를 가져오면서 Member 정보도 같이 한번의 쿼리로 가져오고 싶을땐 어떻게 해야될까?  
   
@@ -73,4 +71,14 @@ Order와 연관된 Member까지 쿼리 한번으로 가져와서 Order 타입으
 >          left join member m 
 >                 on o.member_id = m.member_id 
 >   where o.order_id = 1
->   ```
+>   ```  
+
+## 페치 조인이란  
+* 연관된 엔티티나 컬렉션을 **SQL 한번에 함께 조회**하는 기능
+* JPQL에서 **성능 최적화**를 위해 제공하는 기능
+* SQL 조인 종류는 아니고 JPQL고유의 기능
+* 사용법  
+  [ left [outer] | inner ] join fetch 조인경로 
+
+
+
