@@ -94,6 +94,10 @@ from   member m
 ```
 데이터베이스에 날려진 SQL을 보면 이상없이 데이터를 가져온것 같지만 한가지 주의사항이 있다.  
 일대다 조인시에는 **데이터가 부풀려지기 때문에 Member 컬렉션에 담는 과정에서 동일한 값이 들어갈 수 있다.**  
+|id|name|id|member_id|name|
+|:---:|:---:|:---:|:---:|:---:|
+|1|회원1|1|1|주문1|
+|1|회원1|2|1|주문2|
 ```java
 for(Member member : members) {
  System.out.println(member.getName() + " " + member);
@@ -112,5 +116,9 @@ for(Member member : members) {
 -> 주문4 Order@0x600
 */
 ```
-
+## 페치 조인과 DISTINCT
+일대다 페치조인시 중복된 결과를 제거하기 위해 JPQL에서도 DISTINCT 명령어를 제공한다.  
+JPQL의 DISTINCT는 2가지 기능을 제공
+1. SQL에 DISTINCT를 추가
+2. 애플리케이션에서 엔티티 중복 제거
 
