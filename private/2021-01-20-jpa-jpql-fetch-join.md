@@ -91,8 +91,8 @@ List<Member> members = em.createQuery("select m FROM Member m join fetch m.order
 select m.*, 
        o.* 
 from   member m 
-       join orders o 
-         on m.member_id = o.member_id 
+       inner join orders o 
+               on m.member_id = o.member_id 
 ```
 데이터베이스에 날려진 SQL을 보면 이상없이 데이터를 가져온것 같지만 한가지 주의사항이 있다.  
 일대다 조인시에는 **데이터가 부풀려지기 때문에 Member 컬렉션에 담는 과정에서 동일한 값이 들어갈 수 있다.**  
@@ -124,4 +124,39 @@ for(Member member : members) {
 JPQL의 DISTINCT는 2가지 기능을 제공
 1. SQL에 DISTINCT를 추가
 2. 애플리케이션에서 엔티티 중복 제거
+```java
+List<Member> members = em.createQuery("select distinct m FROM Member m join fetch m.orders", Member.class).getResultList();
+```
+```sql
+select distinct m.*, 
+                o.* 
+from   member m 
+       inner join orders o 
+               on m.member_id = o.member_id 
+```
+보면 SQL에 DISTINCT를 추가한다. 하지만 컬럼별로 데이터가 완전히 같지 않아서 중복제거에는 실패한다.  
+그래서 애플리케이션에서 중복 제거를 시도한다.  
+**같은 식별자**를 가진 Member 엔티티를 제거한다.  
+```java
+for(Member member : members) {
+ System.out.println(member.getName() + " " + member);
+ for (Order order : member.getOrders()) {
+ System.out.println(“-> " + order.getName()+ " " + order);
+}
+/*
+회원1 Member@0x100
+-> 주문1 Order@0x200
+-> 주문2 Order@0x300
+회원2 Member@0x400
+-> 주문3 Order@0x500
+-> 주문4 Order@0x600
+*/
+```
+## 페치 조인과 일반 조인의 차이
+* JPQL에서의 조인도 결과를 반환할 때 연관관계를 고려하지 않음
+* 단지 select 절에 짖어한 엔티티만 조회
+* 페치 조인을 사용하면 연관된 엔티티도 함께 조회함(즉시 로딩)
+* **페치 조인은 객체 그래프를 SQL 한번에 조회하는 개념**
+
+
 
