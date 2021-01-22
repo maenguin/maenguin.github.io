@@ -113,7 +113,15 @@ int resultCount = em.createQuery("update Member p set m.age = 20", Member.class)
 그렇기 때문에 영속성 컨텍스트와 실제 데이터베이스 사이의 데이터 정합성 문제가 발생할 수 있다.  
 그렇기 때문에  
 * 영속성 컨텍스트에 엔티티가 들어가기전에 벌크 연산을 먼저 수행하거나
-* 벌크 연산 수행 후 영속성 컨텍스트를 초기화
+* 벌크 연산 수행 후 영속성 컨텍스트를 초기화 해야한다.
+  ```java
+  int resultCount = em.createQuery("update Member p set m.age = 20", Member.class)
+                    .executeUpdate();
+  //em.clear(); 영속성 컨텍스트를 초기화 하지 않으면
+  
+  Member member1 = em.find(Member.class, 1L);
+  member.getAge(); // 0 출력
+  ```
 
 
 
