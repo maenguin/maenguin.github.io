@@ -20,10 +20,10 @@ from, where, select(하이버네이트 지원)에서 사용가능
 [JPQL]
 select i from item i where treat(i as Book).author = 'kim'
 
-[SQL] (테이블 전략에 맞춰서 적절한 쿼리가 나간다)
+[SQL] 
 select i.*
 from   item i
-where  i.dtype = 'B' and i.author = 'kim' 
+where  i.dtype = 'B' and i.author = 'kim' (테이블 전략에 맞춰서 적절한 쿼리가 나간다)
 ```
 
 ## 엔티티 직접 사용
@@ -32,9 +32,9 @@ JPQL에서 엔티티를 직접 사용하면 SQL에서 해당 엔티티의 기본
 [JPQL]
 select count(m.id) from Member m (엔티티의 id 사용)
 select count(m) from Member m    (엔티티 직접 사용)
+둘다 아래의 SQL로 실행된다.
 
 [SQL]
-select i.*
-from   item i
-where  i.dtype = 'B' and i.author = 'kim' (테이블 전략에 맞춰서 적절한 쿼리가 나간다)
+select count(m.id) as cnt
+from   Member m
 ```
