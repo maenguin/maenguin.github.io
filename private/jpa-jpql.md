@@ -40,4 +40,33 @@ select count(m) from Member m    (엔티티 직접 사용)
 [SQL]
 select count(m.id) as cnt
 from   Member m
-```
+```  
+  
+파라미터로 전달할 경우
+```sql
+[JPQL]
+select m from Member m where m.id = :memberId (엔티티의 id 사용)
+select m from Member m where m = :member      (엔티티 직접 사용)
+
+둘다 아래의 SQL로 실행된다.
+
+[SQL]
+select m.*
+from   Member m
+where  m.id = ?
+```  
+  
+외래키의 경우
+```sql
+[JPQL]
+select m from Member m where m.team.id = :teamId  (엔티티의 id 사용)
+select m from Member m where m.team = :team       (엔티티 직접 사용)
+
+둘다 아래의 SQL로 실행된다.
+
+[SQL]
+select m.*
+from   Member m
+where  m.team_id = ?
+```  
+
