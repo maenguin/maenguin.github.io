@@ -23,5 +23,5 @@ select i from item i where treat(i as Book).author = 'kim'
 [SQL]
 select i.*
 from   item i
-where  i.dtype = 'B' and i.author = 'kim' //테이블 전략에 맞춰서 적절한 쿼리가 나간다
+where  i.dtype = 'B' and i.author = 'kim' (테이블 전략에 맞춰서 적절한 쿼리가 나간다)
 ```
