@@ -37,7 +37,15 @@ Query query = em.createQuery("select m.username, m.age from Member m");
 ```
 
 ### 결과 조회 API
+#### query.getResultList()
+* **결과가 하나 이상일 때**, 리스트 반환
+* 결과가 없으면 빈 리스트 반환
+#### query.getSingleResult()
+* **결과가 정확히 하나**, 단일 객체 반환
+* 결과가 없으면 `javax.persistence.NoResultException` throw
+* 둘 이상이면 `javax.persistence.NonUniqueResultException` throw
 
+***
 
 ## 경로 표현식
 . (점)을 찍어 객체 그래프를 탐색하는 것
