@@ -13,6 +13,8 @@
 ### 상태 필드
 단순히 값을 저장하기 위한 
 
+***
+
 ## 다형성 쿼리
 Item을 상속받은 Book과 Movie 엔티티가 있다고 가정해보자  
 ### TYPE
@@ -40,6 +42,8 @@ select i.*
 from   item i
 where  i.dtype = 'B' and i.author = 'kim' 
 ```
+
+***
 
 ## 엔티티 직접 사용
 JPQL에서 엔티티를 직접 사용하면 SQL에서 해당 엔티티의 기본 키 값을 사용한다.  
@@ -82,6 +86,8 @@ select m.*
 from   Member m
 where  m.team_id = ?
 ```  
+
+***
 
 ## Named 쿼리
 * 미리 정의해서 이름을 부여해두고 사용하는 JPQL
