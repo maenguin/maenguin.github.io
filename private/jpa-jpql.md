@@ -1,9 +1,44 @@
 # 객체지향 쿼리 언어 (JPQL)
+* [기본 문법과 기능](#기본-문법과-기능)
 * [경로 표현식](#경로-표현식)
 * [다형성 쿼리](#다형성-쿼리)
 * [엔티티 직접 사용](#엔티티-직접-사용)
 * [Named 쿼리](#Named-쿼리)
 * [벌크 연산](#벌크-연산)
+
+## 기본 문법과 기능
+### JPQL 문법
+```sql
+select_절
+from_절
+[where_절]
+[groupby_절]
+[having_절]
+[orderby_절]
+
+update_절 [where_절]
+delete_절 [where_절]
+```
+* 엔티티와 속성은 대소문자 구분O (Member, age)
+* JPQL 키워드는 대소문자 구분X (SELECT, FROM, where)
+* 테이블 이름이 아닌 엔티티 이름 사용
+* **별칭은 필수 (as는 생략 가능)  
+
+### TypeQuery & Query
+* TypeQuery  
+  반환 타입이 명확할 때 사용  
+  ```java
+  TypeQuery<Member> query = em.createQuery("select m from member m", Member.class);
+  ```
+* Query
+  반환 타입이 명확하지 않을 때 사용
+  ```java
+  Query query = em.createQuery("select m.username, m.age from Member m");
+  ```
+
+### 결과 조회 API
+
+
 ## 경로 표현식
 . (점)을 찍어 객체 그래프를 탐색하는 것
 * 상태 필드
