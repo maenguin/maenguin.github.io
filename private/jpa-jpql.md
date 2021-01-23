@@ -30,11 +30,11 @@ delete_절 [where_절]
 ```java
 TypeQuery<Member> query = em.createQuery("select m from member m", Member.class);
 ```
-* Query
-  반환 타입이 명확하지 않을 때 사용
-  ```java
-  Query query = em.createQuery("select m.username, m.age from Member m");
-  ```
+#### Query
+반환 타입이 명확하지 않을 때 사용
+```java
+Query query = em.createQuery("select m.username, m.age from Member m");
+```
 
 ### 결과 조회 API
 
