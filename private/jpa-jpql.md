@@ -63,18 +63,22 @@ select절에 조회할 대상을 지정하는 것
 #### 엔티티 프로젝션
 조회할 대상에 엔티티를 지정하는 것으로 조회된 엔티티는 영속성 컨텍스트에 관리된다. 타입 필수
 ```sql
-select m from Member m
-select m.team from Member m
-select m.orders from Member m
+em.createQuery("select m from Member m", Member.class)
+em.createQuery("select m.team from Member m", Team.class)
+em.createQuery("select m.orders from Member m", Order.class)
 ```
 #### 임베디드 타입 프로젝션
 ```sql
-select m.address from member m
+em.createQuery("select m.address from member m", Address.class)
 ```
 #### 스칼라 타입 프로젝션
 ```sql
-select m.username, m.age from Member m
+em.createQuery("select m.username, m.age from Member m")
 ```
+**위 예시처럼 반환타입이 명확하지 않을때는 어떻게 처리해야 할까?**
+#### Query 타입으로 조회
+
+
 ****************************************************************
 
 ## 경로 표현식
