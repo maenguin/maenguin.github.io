@@ -46,6 +46,17 @@ Query query = em.createQuery("select m.username, m.age from Member m");
 * 둘 이상이면 `javax.persistence.NonUniqueResultException` throw
 > 스프링 데이터 JPA에서는 한번 감싸서 null이나 optional 반환
 
+### 파라미터 바인딩
+#### 이름 기준 바인딩
+```java
+em.createQuery(select m from Member m where m.username = :uuu)
+  .setParameter("uuu", "회원1");
+```
+#### 위치 기준 바인딩
+```java
+em.createQuery(select m from Member m where m.username = ?1)
+  .setParameter(1, "회원1");
+```
 ****************************************************************
 
 ## 경로 표현식
@@ -111,7 +122,7 @@ from   member m
 **가급적 묵시적 조인 대신에 명시적 조인을 사용해야 한다.**  
 묵시적 조인은 조인이 일어나는 상황을 한눈에 파악하기 어렵다.  
 
-***
+**************************************************************
 
 ## 다형성 쿼리
 Item을 상속받은 Book과 Movie 엔티티가 있다고 가정해보자  
@@ -141,7 +152,7 @@ from   item i
 where  i.dtype = 'B' and i.author = 'kim' 
 ```
 
-***
+**********************************************************************
 
 ## 엔티티 직접 사용
 JPQL에서 엔티티를 직접 사용하면 SQL에서 해당 엔티티의 기본 키 값을 사용한다.  
@@ -185,7 +196,7 @@ from   Member m
 where  m.team_id = ?
 ```  
 
-***
+*********************************************************************
 
 ## Named 쿼리
 * 미리 정의해서 이름을 부여해두고 사용하는 JPQL
@@ -213,7 +224,7 @@ em.createNamedQuery("Member.findByName", Member.class)
 ```
 > 스프링 데이터 JPA에서는 @Query를 통해 Repository 인터페이스에서 더 깔끔하게 네임드쿼리를 사용할 수 있다.  
 
-***
+****************************************************************************************************
 
 ## 벌크 연산
 모든 Member의 나이를 20으로 바꿔야 된다고 가정해보자  
