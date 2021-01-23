@@ -120,6 +120,29 @@ em.createQuery("select m from Member m order by m.name desc", Member.class)
   .setMaxResult(20)
   .getResultList();
 ```
+
+### 조인
+#### 내부 조인
+```sql
+select m from Member m [inner] join m.team t
+```
+#### 외부 조인
+```sql
+select m from Member m left [outer] join m.team t
+```
+#### 세타 조인
+```sql
+select count(m) from Member m, Team t where m.name = t.name
+```
+#### ON 절
+JPA 2.1부터 on절을 활용한 조인을 지원한다.  
+
+### 서브 쿼리
+### JPQL 타입 표현
+### 조건식
+### JPQL 함수
+
+
 ****************************************************************
 
 ## 경로 표현식
