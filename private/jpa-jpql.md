@@ -75,9 +75,28 @@ em.createQuery("select m.address from member m", Address.class)
 ```sql
 em.createQuery("select m.username, m.age from Member m")
 ```
-**위 예시처럼 반환타입이 명확하지 않을때는 어떻게 처리해야 할까?**
+### 프로젝션 - 여러값 조회
 #### Query 타입으로 조회
-
+```sql
+List resultList = em.createQuery("select m.username, m.age from Member m").getResultList();
+for (Object item : resultList) {
+  Object[] objects = (Object[])item;
+  //...
+}
+```
+#### Object[] 타입으로 조회
+```sql
+List<Object[]> resultList = em.createQuery("select m.username, m.age from Member m", Object[].class ).getResultList();
+for (Object[] item : resultList) {
+  //...
+}
+```
+#### DTO new 명령어로 조회
+```sql
+List<UserDTO> resultList = em.createQuery("select new pakage.UserDTO(m.username, m.age) from Member m", UserDTO.class ).getResultList();
+```
+* 패키지 명을 포함한 전체 클래스명을 입력해야됨
+* 순서와 타입이 일치하는 생성자가 필요함  
 
 ****************************************************************
 
