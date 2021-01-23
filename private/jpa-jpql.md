@@ -62,7 +62,8 @@ from   member m
   * select m from member m **join m.team t**
 * 묵시적 조인  
   * **경로 표현식에 의해 묵시적으로 SQL 조인이 발생**하는 조인(내부 조인만 가능)  
-  * select **m.team** from member m
+  * select **m.team** from member m  
+  
 **가급적 묵시적 조인 대신에 명시적 조인을 사용해야 한다.**  
 묵시적 조인은 조인이 일어나는 상황을 한눈에 파악하기 어렵다.  
 
