@@ -24,7 +24,7 @@ from   member m
 ```
 
 ### 단일 값 연관 필드
-연관관계를 위한 필드 중 @ManyToOne, @OneToOne로 매핑한 엔티티인 필드 (ex: m.team)  
+연관관계를 위한 필드 중 @ManyToOne, @OneToOne로 매핑한 엔티티 필드 (ex: m.team)  
 **묵시적 내부 조인이 발생**  
 탐색 가능 (ex: m.team.name)  
 ```sql
@@ -45,14 +45,25 @@ from   orders o
 ```sql
 [JPQL]
 select m.orders.name from member m //불가능
-select o.name from member m join orders o //명시적 조인으로 
+select o.name from member m join orders o //명시적 조인으로 탐색
+
+select m.orders from member m
 
 [SQL]
-select m.*
-from   orders o
-       inner join member m 
-               on o.member_id = m.id
+select o.*
+from   member m
+       inner join orders o 
+               on m.id = o.member_id
 ```
+
+### 명시적 조인과 묵시적 조인
+* 명시적 조인  
+  * **join 키워드를 직접 사용**하는 조인  
+  * select m from member m join m.team t
+* 묵시적 조인  
+  * **경로 표현식에 의해 묵시적으로 SQL 조인이 발생**하는 조인(내부 조인만 가능)  
+  * select m.team from member m
+
 ***
 
 ## 다형성 쿼리
