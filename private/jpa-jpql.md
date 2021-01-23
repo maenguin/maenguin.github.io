@@ -48,12 +48,12 @@ Query query = em.createQuery("select m.username, m.age from Member m");
 
 ### 파라미터 바인딩
 #### 이름 기준 바인딩
-```java
+```sql
 em.createQuery(select m from Member m where m.username = :uuu)
   .setParameter("uuu", "회원1");
 ```
 #### 위치 기준 바인딩
-```java
+```sql
 em.createQuery(select m from Member m where m.username = ?1)
   .setParameter(1, "회원1");
 ```
