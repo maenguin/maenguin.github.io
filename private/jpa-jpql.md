@@ -115,6 +115,8 @@ em.createNamedQuery("Member.findByName", Member.class)
 ```
 > 스프링 데이터 JPA에서는 @Query를 통해 Repository 인터페이스에서 더 깔끔하게 네임드쿼리를 사용할 수 있다.  
 
+***
+
 ## 벌크 연산
 모든 Member의 나이를 20으로 바꿔야 된다고 가정해보자  
 JPA 변경 감지 기능으로 해결하려면 너무 많은 SQL이 실행된다.  
