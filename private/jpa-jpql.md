@@ -45,7 +45,8 @@ Query query = em.createQuery("select m.username, m.age from Member m");
 * 결과가 없으면 `javax.persistence.NoResultException` throw
 * 둘 이상이면 `javax.persistence.NonUniqueResultException` throw
 > 스프링 데이터 JPA에서는 한번 감싸서 null이나 optional 반환
-***
+
+****************************************************************
 
 ## 경로 표현식
 . (점)을 찍어 객체 그래프를 탐색하는 것
