@@ -22,14 +22,14 @@ delete_절 [where_절]
 * 엔티티와 속성은 대소문자 구분O (Member, age)
 * JPQL 키워드는 대소문자 구분X (SELECT, FROM, where)
 * 테이블 이름이 아닌 엔티티 이름 사용
-* **별칭은 필수 (as는 생략 가능)  
+* **별칭은 필수** (as는 생략 가능)  
 
 ### TypeQuery & Query
-* TypeQuery  
-  반환 타입이 명확할 때 사용  
-  ```java
-  TypeQuery<Member> query = em.createQuery("select m from member m", Member.class);
-  ```
+#### TypeQuery  
+반환 타입이 명확할 때 사용  
+```java
+TypeQuery<Member> query = em.createQuery("select m from member m", Member.class);
+```
 * Query
   반환 타입이 명확하지 않을 때 사용
   ```java
