@@ -6,7 +6,10 @@
 * [Named 쿼리](#Named-쿼리)
 * [벌크 연산](#벌크-연산)
 
+
 ## 기본 문법과 기능
+
+
 ### JPQL 문법
 ```sql
 select_절
@@ -24,6 +27,7 @@ delete_절 [where_절]
 * 테이블 이름이 아닌 엔티티 이름 사용
 * **별칭은 필수** (as는 생략 가능)  
 
+
 ### TypeQuery & Query
 #### TypeQuery  
 반환 타입이 명확할 때 사용  
@@ -36,6 +40,7 @@ TypeQuery<Member> query = em.createQuery("select m from member m", Member.class)
 Query query = em.createQuery("select m.username, m.age from Member m");
 ```
 
+
 ### 결과 조회 API
 #### query.getResultList()
 * **결과가 하나 이상일 때**, 리스트 반환
@@ -45,6 +50,7 @@ Query query = em.createQuery("select m.username, m.age from Member m");
 * 결과가 없으면 `javax.persistence.NoResultException` throw
 * 둘 이상이면 `javax.persistence.NonUniqueResultException` throw
 > 스프링 데이터 JPA에서는 한번 감싸서 null이나 optional 반환
+
 
 ### 파라미터 바인딩
 #### 이름 기준 바인딩
@@ -57,6 +63,7 @@ em.createQuery(select m from Member m where m.username = :uuu)
 em.createQuery(select m from Member m where m.username = ?1)
   .setParameter(1, "회원1");
 ```
+
 
 ### 프로젝션
 select절에 조회할 대상을 지정하는 것
@@ -75,6 +82,8 @@ em.createQuery("select m.address from member m", Address.class)
 ```sql
 em.createQuery("select m.username, m.age from Member m")
 ```
+
+
 ### 프로젝션 - 여러값 조회
 #### Query 타입으로 조회
 ```sql
@@ -93,11 +102,24 @@ for (Object[] item : resultList) {
 ```
 #### DTO new 명령어로 조회
 ```sql
-List<UserDTO> resultList = em.createQuery("select new pakage.UserDTO(m.username, m.age) from Member m", UserDTO.class ).getResultList();
+List<UserDTO> resultList = em.createQuery("select new pakage.UserDTO(m.username, m.age) from Member m", UserDTO.class )
+                             .getResultList();
 ```
 * 패키지 명을 포함한 전체 클래스명을 입력해야됨
 * 순서와 타입이 일치하는 생성자가 필요함  
 
+
+### 페이징 API
+#### setFirtResult(int startPosition)
+조회 시작 위치 (0부터 시작)
+#### setMaxResults(int maxResult)
+조회할 데이터 수
+```java
+em.createQuery("select m from Member m order by m.name desc", Member.class)
+  .setFirstResult(10)
+  .setMaxResult(20)
+  .getResultList();
+```
 ****************************************************************
 
 ## 경로 표현식
@@ -105,7 +127,8 @@ List<UserDTO> resultList = em.createQuery("select new pakage.UserDTO(m.username,
 * 상태 필드
 * 연관 필드
   * 단일 값 연관 필드
-  * 컬렉션 값 연관 필드
+  * 컬렉션 값 연관 필드  
+  
 ### 상태 필드
 단순히 값을 저장하기 위한 필드 (ex: m.username)  
 경로 탐색의 끝으로서 더이상 .을 찍어서 탐색 불가  
