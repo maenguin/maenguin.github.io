@@ -11,8 +11,48 @@
   * 단일 값 연관 필드
   * 컬렉션 값 연관 필드
 ### 상태 필드
-단순히 값을 저장하기 위한 
+단순히 값을 저장하기 위한 필드 (ex: m.username)  
+경로 탐색의 끝으로서 더이상 .을 찍어서 탐색 불가  
+```sql
+[JPQL]
+select m.username, m.age from Member m
 
+[SQL]
+select m.username,
+       m.age
+from   member m
+```
+
+### 단일 값 연관 필드
+연관관계를 위한 필드 중 @ManyToOne, @OneToOne로 매핑한 엔티티인 필드 (ex: m.team)  
+**묵시적 내부 조인이 발생**  
+탐색 가능 (ex: m.team.name)  
+```sql
+[JPQL]
+select o.member from Order o
+
+[SQL]
+select m.*
+from   orders o
+       inner join member m 
+               on o.member_id = m.id
+```
+
+### 컬렉션 값 연관 필드
+연관관계를 위한 필드 중 @OneToMany, @ManyToMany로 매핑한 컬렉션 필드 (ex: m.orders)  
+**묵시적 내부 조인이 발생**  
+**탐색 불가**, 하지만 from 절에서 명시적 조인을 통해 별칭을 얻으면 탐색 가능해짐   
+```sql
+[JPQL]
+select m.orders.name from member m //불가능
+select o.name from member m join orders o //명시적 조인으로 
+
+[SQL]
+select m.*
+from   orders o
+       inner join member m 
+               on o.member_id = m.id
+```
 ***
 
 ## 다형성 쿼리
