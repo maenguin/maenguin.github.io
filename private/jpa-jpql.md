@@ -44,7 +44,7 @@ Query query = em.createQuery("select m.username, m.age from Member m");
 * **결과가 정확히 하나**, 단일 객체 반환
 * 결과가 없으면 `javax.persistence.NoResultException` throw
 * 둘 이상이면 `javax.persistence.NonUniqueResultException` throw
-  > 스프링 데이터 JPA에서는 한번 감싸서 null이나 optional 반환
+> 스프링 데이터 JPA에서는 한번 감싸서 null이나 optional 반환
 ***
 
 ## 경로 표현식
