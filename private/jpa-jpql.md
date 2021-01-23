@@ -57,6 +57,24 @@ em.createQuery(select m from Member m where m.username = :uuu)
 em.createQuery(select m from Member m where m.username = ?1)
   .setParameter(1, "회원1");
 ```
+
+### 프로젝션
+select절에 조회할 대상을 지정하는 것
+#### 엔티티 프로젝션
+조회할 대상에 엔티티를 지정하는 것으로 조회된 엔티티는 영속성 컨텍스트에 관리된다. 타입 필수
+```sql
+select m from Member m
+select m.team from Member m
+select m.orders from Member m
+```
+#### 임베디드 타입 프로젝션
+```sql
+select m.address from member m
+```
+#### 스칼라 타입 프로젝션
+```sql
+select m.username, m.age from Member m
+```
 ****************************************************************
 
 ## 경로 표현식
