@@ -6,7 +6,7 @@ JPA에서는 객체의 상속과 데이터베이스의 슈퍼타입 서브타입
   
 슈퍼타입 서브타입 논리 모델은 크게 3가지 전략으로 물리 모델로 구현될 수 있다.
 ### JOINED 전략
-서브타입 테이블의 PK를 슈퍼타입의 PK로 사용하는 전략이다.  
+서브타입 테이블의 PK로 슈퍼타입의 PK를 사용하는 전략이다.  
 ```java
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
