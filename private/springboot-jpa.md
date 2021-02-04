@@ -24,3 +24,27 @@
 ### 스프링 부트 기본 설정
 `spring.jpa.hibernate.nameing.implicit-strategy`: `org.springframework.boot.orm.jpa.hibernamte.SpringImplicitNamingStrategy`  
 `spring.jpa.hibernate.nameing.physical-strategy`: `org.springframework.boot.orm.jpa.hibernamte.SpringPhysicalNamingStrategy`
+
+## OSIV (Open Session In View)
+영속성 컨텍스트는 트랜잭션과 라이프사이클을 같이하기 때문에 `@Transactional`을 걸어준 메소드가 실행될때  
+영속성 컨텍스트가 생성되면서 데이터베이스 커넥션을 가져오고 메소드가 종료되면 영속성 컨텍스트가 닫히고 커넥션을 반환한다.   
+보통 Controller -> Service -> Repository와 같은 아키텍처를 구성하고  
+Service 계층에 트랜잭션을 거는 경우가 많기 때문에 **서비스 계층을 벗어나 컨트롤러 계층으로 가게 되면 영속성 컨텍스트 닫힌다.**  
+하지만 다음과 같이 `spring.jpa.open-in-view:true(기본값)` OSIV가 켜져있는 상태라면  
+**영속성 컨텍스트가 컨트롤러는 물론 View Template까지 API 응답이 끝날 때 까지 영속성 컨텍스트와 데이터베이스 커넥션을 유지한다.**  
+### OSIV ON
+트랜잭션 밖의 컨트롤러나 View Template에서도 영속성 컨텍스트가 살아있기 때문에 지연로딩이 가능하고  
+코드를 유연하게 작성할 수 있다는 장점이 있지만 **데이터베이스 커넥션을 오래 가지고 있기 때문에 커넥션이 마를 수 도 있다.**  
+### OSIV OFF
+트랜잭션 범위 안에서 지연로딩을 강제로 호출해 두어야 한다.  
+코드가 복잡해진다.
+### 조언 : 커맨드와 쿼리 분리  
+OSIV를 끈 상태로 복잡성을 관리하려면 `Command`와 `Query`를 분리해야 한다.  
+보통 복잡한 화면을 출력하기 위한 쿼리는 화면에 맞추어 성능을 최적화 하는 것 이 중요하다. 하지만 그 복잡성에 비해 핵심 비즈니스에 큰 영향을 주는 것은 아니다.  
+그래서 둘의 관심사를 명확하게 분리한다.  
+* OderService
+  * OrderService : 핵심 비즈니스 로직
+  * OrderQueryService : 화면이나 API에 맞춘 서비스 (주로 읽기 전용 트랜잭션 사용)
+
+
+
