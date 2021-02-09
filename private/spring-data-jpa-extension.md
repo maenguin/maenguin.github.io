@@ -13,29 +13,29 @@
     }
     ```
 2. 사용자 정의 인터페이스를 상속받은 구현 클래스를 만든다.
-  ```java
-  @RequiredArgsConstructor
-  public class MemberRepositoryImpl implements MemberRepositoryCustom {
+    ```java
+    @RequiredArgsConstructor
+    public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
-    private final EntityManager em;
+      private final EntityManager em;
 
-    @Override
-    public List<Member> findMemberCustom() {
-        return em.createQuery("select m from Member m")
-                .getResultList();
+      @Override
+      public List<Member> findMemberCustom() {
+          return em.createQuery("select m from Member m")
+                  .getResultList();
+      }
     }
-  }
-  ```  
+    ```  
 3. 사용자 정의 인터페이스를 기존에 사용하던 JPA 리포지토리 인터페이스에 상속한다.  
-  ```java
-  public interface MemberRepository extends JpaRepository<Member, Long> , MemberRepositoryCustom {
-      ...
-  }
-  ```
+    ```java
+    public interface MemberRepository extends JpaRepository<Member, Long> , MemberRepositoryCustom {
+        ...
+    }
+    ```
 4. 사용자 정의 메서드를 호출해서 사용한다.  
-  ```java
-  memberRepository.findMemberCustom();
-  ```  
+    ```java
+    memberRepository.findMemberCustom();
+    ```  
   
 * 사용자 정의 구현 클래스는 **리포지토리 인터페스 이름 + `Impl`** 로 명명해야 스프링 데이터 JPA가 인식해서 스프링 빈으로 등록한다.  
 * 명명규칙을 변경하고 싶으면 `@EnableJpaRepositories에 respotirogyImplementationPostfix 속성`을 이용하면 된다.  
