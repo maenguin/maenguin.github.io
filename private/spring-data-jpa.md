@@ -69,9 +69,9 @@ List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 * `limit` : findFirst3, findFirst, findTop, findTop3  
 
 **공식 문서 참고**
-[필터 조건](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
-[qeury-creation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation)
-[limit-query-result](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.limit-query-result)
+[필터 조건](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)  
+[qeury-creation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation)  
+[limit-query-result](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.limit-query-result)  
 
 ### 네임드 쿼리 기능
 ### 리포지토리 메소드에 쿼리 정의하기
