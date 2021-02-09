@@ -3,7 +3,6 @@
 
 ## 공통인터페이스 분석
 
-
 ### JpaRepository
 `spring-data-jpa` 라이브러리의  
 `org.springframework.data.jpa.respository` 패키지에 있는 인터페이스이다.  
@@ -27,6 +26,8 @@ Jpa와 Rdb에 특화되어 있는 위와는 다르게 공통적인 속성으로 
 아무런 기능이 정의되어 있지 않고 마커 인터페이스 역할을 한다.  
 최상단의 인터페이스로서 스프링 컴포넌트 스캔을 용이하게 해준다.  
 
+***
+
 ## 공통 인터페이스 주요 메서드
 * `save(S)` : 새로운 엔티티는 저장하고 이미 있는 엔티티는 병합
 * `delete(T)` : 엔티티 하나를 삭제 (내부에서 em.remove() 호출)
@@ -38,6 +39,7 @@ Jpa와 Rdb에 특화되어 있는 위와는 다르게 공통적인 속성으로 
 `T` : 엔티티  
 `ID` : 엔티티의 식별자 타입  
 
+***
 
 ## 쿼리 메소드 기능
 공통 인터페이스에 없는 메소드를 구현하려면?  
@@ -272,6 +274,93 @@ public void paging() throws Exception {
          countQuery = “select count(m.username) from Member m”)
   Page<Member> findMemberAllCountBy(Pageable pageable);
   ```
+
+***
+
+## 벌크성 수정 쿼리
+
+### 순수 JPA 벌크성 수정 쿼리
+```java
+public int bulkAgePlus(int age) {
+    return em.createQuery("update Member m set m.age = m.age + 1 where m.age >= :age")
+            .setParameter("age", age)
+            .executeUpdate();
+}
+```
+### 스프링 데이터 JPA 벌크성 수정 쿼리
+```java
+@Modifying(clearAutomatically = true)
+@Query("update Member m set m.age = m.age + 1 where m.age >= :age")
+int bulkAgePlus(@Param("age") int age);
+```
+* 벌크성 수정, 삭제 쿼리는 `@Modifying` 어노테이션을 사용해야한다. (사용하지 않으면 예외 발생)  
+* `clearAutomatically = true` 옵션을 통해 벌크성 쿼리를 실행하고 나서 영속성 컨텍스트를 초기화 할 수 있다. (기본값 : false)  
+
+***
+
+## @EntityGraph
+연관된 엔티티들을 SQL 한번에 조회하는 방법  
+```java
+//페치조인을 명시해서 사용하는 일반적인 방법
+@Query("select m from Member m left join fetch m.team")
+List<Member> findMemberFetchJoin();
+
+//공통 메서드를 오버라이드
+@Override
+@EntityGraph(attributePaths = {"team"})
+List<Member> findAll();
+
+//JPQL + 엔티티 그래프
+@EntityGraph(attributePaths = {"team"})
+@Query("select m from Member m") //끼워넣기 가능
+List<Member> findMemberEntityGraph();
+
+//메서드 이름으로 쿼리에서도 가능
+@EntityGraph(attributePaths = {"team"})
+List<Member> findEntityGraphByUsername(@Param("username") String username);
+```
+* 사실상 페치 조인의 간편 버전
+* left outer join 사용
+* NamedEntityGraph라는 것도 있다.  
+
+*** 
+
+## JPA Hint
+SQL 힌트가 아니라 JPA 구현체에게 제공하는 힌트  
+```java
+@QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
+Member findReadonlyByUsername(String username);
+```
+```java
+@Test
+public void queryHint() throws Exception {
+
+    //given
+    Member member1 = new Member("member1", 10);
+    memberRepository.save(member1);
+    em.flush();
+    em.clear();
+
+    //when
+    Member findMember = memberRepository.findReadonlyByUsername("member1");
+    findMember.setUsername("member2");
+    em.flush(); //update Query 실행 안됨
+    //then
+}
+```
+* `QueryHint의 readOnly`는 스냅샷을 만들지 않기 때문에 메모리가 절약됨  
+* 참고로 `@Transaction(readOnly=true)`는 트랜잭션 커밋 시점에 flush를 하지 않기 때문에 dirty checking 비용이 들지 않아 cpu가 절약됨  
+  스프링 5.1 버전 이후 부터는 `@Transaction(readOnly=true)`로 설정시 `QueryHint의 readOnly`까지 모두 동작함
+  DTO 직접 조회시에는 스냅샷이 만들어지지 않음
+
+```java
+@QueryHints(value = { @QueryHint(name = "org.hibernate.readOnly",
+                                 value = "true")},
+                                 forCounting = true)
+Page<Member> findByUsername(String name, Pagable pageable);
+```
+* `forCounting` : 반환 타입으로 Page 인터페이스를 적용하면 추가로 호출하는 count 쿼리도 쿼리 힌트 적용 (기본값 true)
+
 
 
 
