@@ -43,7 +43,9 @@ Jpa와 Rdb에 특화되어 있는 위와는 다르게 공통적인 속성으로 
 공통 인터페이스에 없는 메소드를 구현하려면?  
 
 ### 메소드 이름으로 쿼리 생성
-스프링 데이터 JPA는 메소드 이름을 분석해서 JPQL을 생성하고 실행하는 기능을 제공한다.  
+**스프링 데이터 JPA는 메소드 이름을 분석해서 JPQL을 생성하고 실행하는 기능을 제공한다.**  
+이름과 나이를 기준으로 회원을 조회하는 메소드를 구현한다고 가정하면  
+순수 JPA의 경우 다음과 같이 직접 코드를 구현해야한다.  
 ```java
 [순수 JPA 리포지토리]
 public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
@@ -52,11 +54,22 @@ public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
             .setParameter("age", age)
             .getResultList();
 }
-```
+```  
+하지만 스프링 데이터 JPA를 사용할 경우 메소드 이름만 규칙에 맞게 지어주면 직접 구현하지 않아도 스프링 데이터 JPA가 자동으로 JPQL을 생성하고 실행한다.  
 ```java
 [스프링 데이터 JPA]
 List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 ```
+#### 메소드 이름 규칙  
+* `조회` : find...By, read...By, query...By, get...By
+* `count` : count...By (반환타입: `long`)
+* `exists` : exists...By (반환타입: `boolean`)
+* `삭제` : delete...By, remove...By (반환타입: `long`)
+* `distinct` : findDistinctBy
+* `limit` : findFirst3, findFirst, findTop, findTop3  
+
+[qeury-creation]("https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation")
+
 
 ### 네임드 쿼리 기능
 ### 리포지토리 메소드에 쿼리 정의하기
