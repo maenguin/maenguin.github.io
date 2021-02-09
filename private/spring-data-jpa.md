@@ -117,16 +117,17 @@ List<Member> findUser(@Param("username") String username, @Param("age") int age)
 * 메소드 이름으로 쿼리 생성 기능은 파라미터가 증가하면 이름이 매우 지저분해지기 때문에 @Query를 자주 사용
 
 ### 값, DTO 조회하기
+#### 값 하나
 ```java
-[값 하나]
 @Query("select m.username from Member m")
 List<String> findUsernameList();
 ```
+#### 임베디드 타입
 ```java
-[JPA 값 타입]
 @Query("select m.address from Member m")
 List<Address> findUserAddressList();
 ```
+#### DTO 직접 조회
 ```java
 [DTO로 직접 조회]
 @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
