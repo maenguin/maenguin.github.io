@@ -148,9 +148,9 @@ List<Member> findListByUsername(String username);
 ```java
 Member findMemberByUsername(String username);
 ```  
-단건으로 반환 타입을 지정했을때  
-결과가 없으면 **null** (JPA에서는  `javax.persistence.NoResultException` 예외가 발생한다.)  
-결과가 2건 이상 이면 `javax.persistence.NonUniqueResultException` 예외가 발생한다.  
+단건으로 반환 타입을 지정하면 스프링 데이터 JPA 내부에서 JPQL의 `Query.getSingleResult()`를 호출한다.  
+결과가 없으면 **null** (JPA에서는  `javax.persistence.NoResultException` 예외가 발생했었다.)  
+결과가 2건 이상 이면 **`javax.persistence.NonUniqueResultException` 예외가 발생한다.**  
 ### 단건 Optional
 ```java
 Optional<Member> findOptionalByUsername(String username);
