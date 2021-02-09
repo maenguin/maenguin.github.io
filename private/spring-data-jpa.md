@@ -40,9 +40,24 @@ Jpa와 Rdb에 특화되어 있는 위와는 다르게 공통적인 속성으로 
 
 
 ## 쿼리 메소드 기능
-공통 인터페이스에 없는 기능을 구현하려면?  
+공통 인터페이스에 없는 메소드를 구현하려면?  
 
-### 메소드 이름을 쿼리 생성
+### 메소드 이름으로 쿼리 생성
+스프링 데이터 JPA는 메소드 이름을 분석해서 JPQL을 생성하고 실행하는 기능을 제공한다.  
+```java
+[순수 JPA 리포지토리]
+public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
+    return em.createQuery("select m from Member m where m.username = :username and m.age > :age", Member.class)
+            .setParameter("username", username)
+            .setParameter("age", age)
+            .getResultList();
+}
+```
+```java
+[스프링 데이터 JPA]
+List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
+```
+
 ### 네임드 쿼리 기능
 ### 리포지토리 메소드에 쿼리 정의하기
 ### 값, DTO 조회하기
