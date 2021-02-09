@@ -132,6 +132,47 @@ public class BaseEntity extends BaseTimeEntity {
 }
 ```
 
+***
 
+## Web 확장 - 도메인 클래스 컨버터
+HTTP 파라미터로 넘어온 엔티티의 아이디로 엔티티 객체를 찾아서 바인딩 해주는 기능
+### 도메인 클래스 컨버터 사용 전
+```java
+@GetMapping("members/{id}")
+public String findMember(@PathVariable("id") Long id) {
+    Member member = memberRepository.findById(id).get();
+    return member.getUsername();
+}
+```
+### 도메인 클래스 컨버터 사용 후
+```java
+@GetMapping("members/{id}")
+public String findMember(@PathVariable("id") Member member) {
+    return member.getUsername();
+}
+```
+* HTTP 요청은 회원 id를 받지만 도메인 클래스 컨버터가 중간에 동작해서 회원 엔티티 객체를 반환
+* 내부적으로 리포지토리를 사용해서 엔티티를 찾음
+> **주의**  
+도메인 클래스 컨버터로 받은 엔티티는 단순 조회용으로만 사용해야 한다. (detach 상태임)  
+
+***
+
+## Web 확장 - 페이징과 정렬
+스프링 데이터가 제공하는 페이징과 정렬 기능을 스프링 MVC에서 편리하게 사용할 수 있게 해주는 기능  
+```java
+@GetMapping("members")
+public Page<Member> list(Pageable pageable) {
+    return memberRepository.findAll(pageable);
+}
+```  
+* 위와 같이만 작성해도 실제 호출시 query 파라미터로 page, size, sort를 사용할 수 있다.  
+* 예시) /members?page=0&size=3&sort=id,desc&sort=username,desc  
+
+### 페이징 & 정렬 기본값 변경  
+* 글로벌 설정: 스프링 부트
+  ```yml
+  spring.data.web.pageable.
+  ```
 
 
