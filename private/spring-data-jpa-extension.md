@@ -7,11 +7,11 @@
 이때 다음과 같이 사용자 정의 리포지토리를 구현할 수 있다.  
 
 1. 먼저 사용자 정의 인터페이스를 만든다.  
-  ```java
-  public interface MemberRepositoryCustom {
-    List<Member> findMemberCustom();
-  }
-  ```
+    ```java
+    public interface MemberRepositoryCustom {
+      List<Member> findMemberCustom();
+    }
+    ```
 2. 사용자 정의 인터페이스를 상속받은 구현 클래스를 만든다.
   ```java
   @RequiredArgsConstructor
