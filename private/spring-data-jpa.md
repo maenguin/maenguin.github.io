@@ -68,7 +68,7 @@ List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 * `distinct` : findDistinctBy
 * `limit` : findFirst3, findFirst, findTop, findTop3  
 
-[qeury-creation]("https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation")
+[qeury-creation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
 
 
 ### 네임드 쿼리 기능
