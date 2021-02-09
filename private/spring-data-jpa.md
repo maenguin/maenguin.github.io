@@ -350,8 +350,8 @@ public void queryHint() throws Exception {
 ```
 * `QueryHint의 readOnly`는 스냅샷을 만들지 않기 때문에 메모리가 절약됨  
 * 참고로 `@Transaction(readOnly=true)`는 트랜잭션 커밋 시점에 flush를 하지 않기 때문에 dirty checking 비용이 들지 않아 cpu가 절약됨  
-  스프링 5.1 버전 이후 부터는 `@Transaction(readOnly=true)`로 설정시 `QueryHint의 readOnly`까지 모두 동작함
-  DTO 직접 조회시에는 스냅샷이 만들어지지 않음
+  스프링 5.1 버전 이후 부터는 `@Transaction(readOnly=true)`로 설정시 `QueryHint의 readOnly`까지 모두 동작함  
+  DTO 직접 조회시에는 스냅샷이 만들어지지 않음  
 
 ```java
 @QueryHints(value = { @QueryHint(name = "org.hibernate.readOnly",
@@ -361,7 +361,14 @@ Page<Member> findByUsername(String name, Pagable pageable);
 ```
 * `forCounting` : 반환 타입으로 Page 인터페이스를 적용하면 추가로 호출하는 count 쿼리도 쿼리 힌트 적용 (기본값 true)
 
+***
 
+## Lock
+```java
+@Lock(LockModeType.PESSIMISTIC_WRITE)
+List<Member> findLockByUsername(String username);
+```
+* `org.springframework.data.jpa.repository.Lock` 어노테이션을 사용
 
 
 
