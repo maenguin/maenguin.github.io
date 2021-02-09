@@ -171,8 +171,24 @@ public Page<Member> list(Pageable pageable) {
 
 ### 페이징 & 정렬 기본값 변경  
 * 글로벌 설정: 스프링 부트
-  ```yml
-  spring.data.web.pageable.
-  ```
-
+    ```yml
+    spring.data.web.pageable.default-page-size=(기본페이지 사이즈 기본값: 20)
+    spring.data.web.pageable.max-page-size=(최대 페이지 사이즈 기본값: 2000)
+    ```
+* 개별 설정 : `@PageableDefault`
+    ```java
+    @GetMapping("members")
+    public String list(@PageableDefault(size = 12, sort = “username”, direction = Sort.Direction.DESC) Pageable pageable) {
+    ...
+    }
+    ```
+### 멀티 페이징
+* 페이징 정보가 둘 이상이면 접두사로 구분
+* `@Qualifier`에 접두사명 추가 "{접두사명}_xxx"
+```java
+public String list(
+ @Qualifier("member") Pageable memberPageable,
+ @Qualifier("order") Pageable orderPageable, ...
+```
+* 예시) /member?member_page=0&order_page=1 
 
