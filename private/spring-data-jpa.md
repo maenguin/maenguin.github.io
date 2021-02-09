@@ -47,7 +47,7 @@ Jpa와 Rdb에 특화되어 있는 위와는 다르게 공통적인 속성으로 
 이름과 나이를 기준으로 회원을 조회하는 메소드를 구현한다고 가정하면  
 순수 JPA의 경우 다음과 같이 직접 코드를 구현해야한다.  
 ```java
-[순수 JPA 리포지토리]
+[순수 JPA]
 public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
     return em.createQuery("select m from Member m where m.username = :username and m.age > :age", Member.class)
             .setParameter("username", username)
@@ -72,9 +72,50 @@ List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 [필터 조건](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)  
 [qeury-creation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation)  
 [limit-query-result](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.limit-query-result)  
+  
+> **참고**  
+엔티티의 필드명이 변경되면 인터페이스에 정의한 메서드 이름도 꼭 함께 변경해야 된다.  
+그렇지 않으면 애플리케이션 실행 시점에 오류가 발생한다.  
+(로딩 시점에 오류인지 할 수 있는게 큰 장점)  
 
-### 네임드 쿼리 기능
+### JPA NamedQuery
+스프링 데이터 JPA에서도 순수 JPA의 NamedQuery를 호출할 수 있다.  
+```java
+@NamedQuery(name = "Member.findByUsername", 
+           query = "select m from Member m where m.username = :username")
+public class Member {
+    ...
+}
+```
+```java
+[순수 JPA]
+public List<Member> findByUsername(String username) {
+    return em.createNamedQuery("Member.findByUsername", Member.class)
+            .setParameter("username", username)
+            .getResultList();
+}
+```  
+스프링 데이터 JPA에서는 `@Query`를 사용해 미리 정의된 네임드쿼리를 호출할 수 있는데  
+다음과 같이 `@Query`를 생략해도 네임드쿼리가 호출된다.  
+왜냐하면 스프링 데이터 JPA는 `도메인 클래스명.메소드명`으로 먼저 네임드쿼리가 존재하는지 확인하기 때문이다.(없으면 메서드 이름으로 쿼리 생성 전략을 사용)    
+파라미터 바인딩을 위해 `@Param`을 사용한다.  
+```java
+[스프링 데이터 JPA]
+//@Query(name = "Member.findByUsername")
+List<Member> findByUsername(@Param("username") String username);
+```
+
 ### 리포지토리 메소드에 쿼리 정의하기
+네임드쿼리를 직접 등록해서 사용하는 일은 드물다.  
+대신 **`@Query`를 사용해서 리포지토리 메소드에 쿼리를 직접 정의한다.**  
+```java
+@Query("select m from Member m where m.username = :username and m.age = :age")
+List<Member> findUser(@Param("username") String username, @Param("age") int age);
+```  
+* 이름없는 Named 쿼리
+* JPA Named 쿼리처럼 애플리케이션 실행 시점에 문법 오류를 발견할 수 있다.  
+* 메소드 이름으로 쿼리 생성 기능은 파라미터가 증가하면 이름이 매우 지저분해지기 때문에 @Query를 자주 사용
+
 ### 값, DTO 조회하기
 
 
