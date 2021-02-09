@@ -156,5 +156,123 @@ Member findMemberByUsername(String username);
 Optional<Member> findOptionalByUsername(String username);
 ```
 
+***
+
+## 페이징과 정렬
+다음 조건으로 페이징과 정렬을 해보자
+* 검색 조건 : 나이가 10살
+* 정렬 조건 : 이름으로 내림차순
+* 페이징 조건 : 첫 번째 페이지, 페이지당 보여줄 데이터는 3건  
+
+### 순수 JPA 페이징과 정렬
+```java
+public List<Member> findByPage(int age, int offset, int limit) {
+        return em.createQuery("select m from Member m where m.age = :age order by m.username desc", Member.class)
+                .setParameter("age", age)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+public long totalCount(int age) {
+    return em.createQuery("select count(m) from Member m where m.age = :age", Long.class)
+            .setParameter("age", age)
+            .getSingleResult();
+}
+```
+```java
+@Test
+public void paging() throws Exception {
+
+    //given
+    memberJpaRepository.save(new Member("member1", 10));
+    memberJpaRepository.save(new Member("member2", 10));
+    memberJpaRepository.save(new Member("member3", 10));
+    memberJpaRepository.save(new Member("member4", 10));
+    memberJpaRepository.save(new Member("member5", 10));
+
+    int age = 10;
+    int offset = 0;
+    int limit = 3;
+
+    //when
+    List<Member> members = memberJpaRepository.findByPage(age, offset, limit);
+    long totalCount = memberJpaRepository.totalCount(age);
+
+    //그러고..
+    //페이지 계산 공식 적용...
+    //totalPage 개수 구하기..
+    //마지막 페이지..
+    //최초 페이지..
+
+    //then
+    assertThat(members.size()).isEqualTo(3);
+    assertThat(totalCount).isEqualTo(5);
+}
+```
+
+### 스프링 데이터 JPA 페이징과 정렬
+
+#### 페이징과 정렬 파라미터
+* `org.springframework.data.domain.Sort` : 정렬 기능
+* `org.springframework.data.domain.Pageable` : 페이징 기능 (내부에 Sort 포함)
+#### 특별한 반환 타입
+* `org.springframework.data.domain.Page` : 추가 count 쿼리 결과를 포함하는 
+* `org.springframework.data.domain.Slice` : 추가 count 쿼리 없이 다음 페이지만 확인 가능 **(내부적으로 limit+1 조회)**
+* `List` : 추가 count 쿼리 없이 결과만 반환  
+```java
+Page<Member> findByusername(String name, Pageable pageable); //count 쿼리 사용
+Slice<Member> findByusername(String name, Pageable pageable); //count 쿼리 사용 안함
+List<Member> findByusername(String name, Pageable pageable); //count 쿼리 사용 안함
+List<Member> findByusername(String name, Sort sort); //count 쿼리 사용
+```
+
+#### 예시
+```java
+Slice<Member> findByAge(int age, Pageable pageable);
+```  
+```java
+@Test
+public void paging() throws Exception {
+
+    //given
+    memberRepository.save(new Member("member1", 10));
+    memberRepository.save(new Member("member2", 10));
+    memberRepository.save(new Member("member3", 10));
+    memberRepository.save(new Member("member4", 10));
+    memberRepository.save(new Member("member5", 10));
+
+    int age = 10;
+    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+    //when
+    Slice<Member> page = memberRepository.findByAge(age, pageRequest);
+    //Slice<MemberDto> toMap = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null));
+
+    //then
+    List<Member> content = page.getContent();
+    assertThat(content.size()).isEqualTo(3);
+    //assertThat(page.getTotalElements()).isEqualTo(5); Page에만 있는 메소드
+    //assertThat(page.getTotalPages()).isEqualTo(2);
+    assertThat(page.getNumber()).isEqualTo(0);
+    assertThat(page.isFirst()).isTrue();
+    assertThat(page.hasNext()).isTrue();
+    for (Member member : content) {
+        System.out.println("member = " + member);
+    }
+}
+```
+* `Pageable`은 인터페이스다. 보통 구현체로 `org.springframework.data.domain.PageRequest` 객체를 사용한다.
+* `PageRequest` 생성자의 첫 번째 파라미터에는 현재 페이지를, 두 번째 파라미터에는 조회할 데이터 수를 입력한다.  
+  추가로 정렬 정보도 파라미터로 사용가능하며 **페이지는 0부터 시작한다.**
+* Page와 Slice 모두 map 기능을 제공하기 때문에 페이지를 유지하면서 엔티티를 DTO로 변환할 수 있다.
+* 카운트 쿼리는 전체 데이터를 조회해야되기 때문에 굉장히 무겁다 그래서 다음과 같이 카운트 쿼리를 분리 할 수 있다.  
+  ```java
+  @Query(value = “select m from Member m join team t”,
+         countQuery = “select count(m.username) from Member m”)
+  Page<Member> findMemberAllCountBy(Pageable pageable);
+  ```
+
+
 
 
