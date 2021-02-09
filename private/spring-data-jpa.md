@@ -129,12 +129,32 @@ List<Address> findUserAddressList();
 ```
 #### DTO 직접 조회
 ```java
-[DTO로 직접 조회]
 @Query("select new study.datajpa.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t")
 List<MemberDto> findMemberDto();
+```  
+
+***
+
+## 반환 타입
+스프링 데이터 JPA는 유연한 반환 타입을 지원한다.  
+
+### 컬렉션
+```java
+List<Member> findListByUsername(String username);
+```  
+컬렉션으로 반환 타입을 지정했을때 결과가 없으면 **빈 컬렉션을 반환한다.**  
+
+### 단건  
+```java
+Member findMemberByUsername(String username);
+```  
+단건으로 반환 타입을 지정했을때  
+결과가 없으면 **null** (JPA에서는  `javax.persistence.NoResultException` 예외가 발생한다.)  
+결과가 2건 이상 이면 `javax.persistence.NonUniqueResultException` 예외가 발생한다.  
+### 단건 Optional
+```java
+Optional<Member> findOptionalByUsername(String username);
 ```
-
-
 
 
 
