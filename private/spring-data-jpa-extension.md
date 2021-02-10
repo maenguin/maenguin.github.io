@@ -192,3 +192,38 @@ public String list(
 ```
 * 예시) /member?member_page=0&order_page=1 
 
+***
+
+## 스프링 데이터 JPA 구현체 분석
+스프링 데이터 JPA 공통 인터페이스를 상속한 인터페이스가 동작하는 이유는  
+애플리케이션 실행 시점에 스프링 데이터 JPA가 구현체를 직접 생성해주기 때문이다.  
+그렇다면 실제 구현체는 무엇이고 어떻게 구현되어 있을까?  
+
+### SimpleJpaRepository
+```java
+@Repository
+@Transactional(readOnly = true)
+public class SimpleJpaRepository<T, ID> ...{
+
+     @Transactional
+     public <S extends T> S save(S entity) {
+         if (entityInformation.isNew(entity)) {
+             em.persist(entity);
+             return entity;
+         } else {
+             return em.merge(entity);
+         }
+     }
+     ...
+}
+```
+* 실제 구현체  
+* `org.springframework.data.jpa.repository.support.SimpleJpaRepository`에 존재  
+* `@Repository` 적용 : JPA 예외를 스프링이 추상화한 예외로 변환
+* `@Transactional`이 이미 적용되어 있음
+  * 서비스 계층에서 트랜잭션을 시작하지 않아도 리포지토리에서 트랜잭션이 시작
+  * 서비스 계층에서 트랜잭션을 시작하면 리포지토리는 해당 트랜잭션을 전파 받아서 사용
+  * `readOnly = true` 적용 : 내부적으로 성능 최적화를 하고 있음
+* `save()` 메서드 : **새로운 엔티티면 저장 아니면 병합**
+
+
