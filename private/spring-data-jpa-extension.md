@@ -287,4 +287,63 @@ public class Item implements Persistable<String> {
 
 ***
 
+## 그외
+
+### Projections
+DTO 직접 조회를 좀 더 편하게 사용할 수 있게 해주는 기능  
+
+#### 인터페이스 기반 Closed Projections
+```java
+public interface UsernameOnly {
+    String getUsername();
+}
+```
+```java
+public interface MemberRepository ... {
+    List<UsernameOnly> findProjectionsByUsername(String username);
+}
+```
+```sql
+select m.username from member m where m.username = ?
+```
+* 프로퍼티 형식의 인터페이스를 제공하면, 구현체는 스프링 데이터 JPA가 제공
+* 조회할 엔티티의 필드를 getter 형식으로 지정하면 해당 필드만 선택해서 조회(Projection)
+* 메서드 이름은 자유, 반환 타입으로 인지
+* SQL에서도 select절에서 username만 조회(Projection)하는 것을 확인
+
+#### 인터페이스 기반 Open Projections
+```java
+public interface UsernameOnly {
+    @Value("#{target.username + ' ' + target.age + }"
+    String getUsername();
+}
+```
+* 스프링의 SpEL 문법 지원
+* 단 이렇게 SpEL 문법을 사용하면, DB에서 **엔티티 필드를 전부 조회**해온 다음에 계산한다
+
+#### 클래스 기반 Projection
+```java
+public class UsernameOnlyDto {
+
+    private final String username;
+    
+    public UsernameOnlyDto(String username) {
+        this.username = username;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+}
+```
+* 인터페이스가 아닌 구체적인 DTO 형식도 가능
+* 생성자의 파라미터 이름으로 매칭
+
+#### 동적 Projections
+Generic type을 줘서 동적으로 프로젝션 데이터 변경 가능
+```java
+<T> List<T> findProjectionsByUsername(String username, Class<T> type);
+```
+
+
 
