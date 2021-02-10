@@ -322,6 +322,7 @@ public interface UsernameOnly {
 * 단 이렇게 SpEL 문법을 사용하면, DB에서 **엔티티 필드를 전부 조회**해온 다음에 계산한다
 
 #### 클래스 기반 Projection
+인터페이스가 아닌 구체적인 DTO 형식도 가능
 ```java
 public class UsernameOnlyDto {
 
@@ -336,7 +337,6 @@ public class UsernameOnlyDto {
     }
 }
 ```
-* 인터페이스가 아닌 구체적인 DTO 형식도 가능
 * 생성자의 파라미터 이름으로 매칭
 
 #### 동적 Projections
@@ -345,5 +345,74 @@ Generic type을 줘서 동적으로 프로젝션 데이터 변경 가능
 <T> List<T> findProjectionsByUsername(String username, Class<T> type);
 ```
 
+#### 중첩 구조 처리
+```java
+public interface NestedClosedProjection {
+    
+    String getUsername();
+    TeamInfo getTeam();
+    
+    interface TeamInfo {
+        String getName();
+    }
+}
+```
+```sql
+select
+   m.username as col_0_0_,
+   t.teamid as col_1_0_,
+   t.teamid as teamid1_2_,
+   t.name as name2_2_
+from
+   member m
+left outer join
+   team t
+      on m.teamid=t.teamid
+where
+   m.username=?
+```
+* 프로젝션 대상이 root 엔티티면 JPQL select 절 최적화 가능
+* 프로젝션 대상이 root가 아니면
+  * left outer join 처리
+  * 모든 필드를 select해서 엔티티로 조회한 다음에 계산
+
+*** 
+
+### 네이티브 쿼리
+가급적 사용하지 않는게 좋다.  
+#### 스프링 데이터 JPA 기반 네이티브 쿼리
+* 페이징 지원
+* 반환 타입
+  * Object[]
+  * Tuple
+  * **DTO(스프링 데이터 인터페이스 Projections 지원)**
+* 제약
+  * Sort 파라미터를 통한 정렬이 정상 동작하지 않을 수 있음(믿지 말고 직접 처리)
+  * JPQL처럼 애플리케이션 로딩 시점에 문법 확인 불가
+  * 동적 쿼리 불가
+
+#### 기본 사용 예제
+```java
+public interface MemberRepository extends JpaRepository<Member, Long> {
+   @Query(value = "select * from member where username = ?", nativeQuery = true)
+   Member findByNativeQuery(String username);
+}
+```
+#### 네이티브 SQL DTO로 변환
+여러 방법이 있지만 복잡하고 최근에 지원하기 시작한 Projections를 사용하는게 좋다.  
+```java
+public interface MemberProjection {
+    Long getId();
+    String getUsername();
+    String getTeamName();
+}
+```
+```java
+@Query(value = "SELECT m.member_id as id, m.username, t.name as teamName FROM member m left join team t",
+       countQuery = "SELECT count(*) from member",
+      nativeQuery = true)
+Page<MemberProjection> findByNativeProjection(Pageable pageable);
+```
+> 네이티브 SQL을 DTO로 조회할 때는 JdbcTemplate or myBatis 권장
 
 
