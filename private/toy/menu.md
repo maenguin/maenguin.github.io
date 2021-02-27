@@ -71,6 +71,23 @@
 
 ## 구현
 
+### 저장&수정
 
+#### MenuController
+```java
+@PostMapping("/api/v1/store/{storeId}/menu-group")
+public void saveMenuGroup(@PathVariable("storeId") Long storeId, @RequestBody MenuGroupSaveDto menuGroupSaveDto) {
+    menuService.saveMenuGroup(storeId, menuGroupSaveDto);
+}
+```
+** MenuService **
+```java
+@Transactional
+public void saveMenuGroup(Long storeId, MenuGroupSaveDto menuGroupSaveDto) {
+    Store store = storeRepository.findById(storeId)
+            .orElseThrow(EntityNotFoundException::new);
+    menuGroupRepository.save(menuGroupSaveDto.toEntity(store));
+}
+```
 
 
