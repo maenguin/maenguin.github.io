@@ -80,7 +80,7 @@ public void saveMenuGroup(@PathVariable("storeId") Long storeId, @RequestBody Me
     menuService.saveMenuGroup(storeId, menuGroupSaveDto);
 }
 ```
-** MenuService **
+**MenuService**
 ```java
 @Transactional
 public void saveMenuGroup(Long storeId, MenuGroupSaveDto menuGroupSaveDto) {
