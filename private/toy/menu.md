@@ -100,9 +100,6 @@ public class MenuGroupSaveDto {
 
     private List<MenuSaveDto> menuSaveList;
 
-    private Long storeId;
-
-
     public MenuGroup toEntity(final Store store) {
 
         MenuGroup menuGroup = MenuGroup.builder()
