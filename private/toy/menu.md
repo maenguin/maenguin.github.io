@@ -80,7 +80,7 @@ public void saveMenuGroup(@PathVariable("storeId") Long storeId, @RequestBody Me
     menuService.saveMenuGroup(storeId, menuGroupSaveDto);
 }
 ```
-**MenuService**
+#### MenuService
 ```java
 @Transactional
 public void saveMenuGroup(Long storeId, MenuGroupSaveDto menuGroupSaveDto) {
@@ -89,5 +89,36 @@ public void saveMenuGroup(Long storeId, MenuGroupSaveDto menuGroupSaveDto) {
     menuGroupRepository.save(menuGroupSaveDto.toEntity(store));
 }
 ```
+#### MenuGroupSaveDto
+```java
+@Getter
+public class MenuGroupSaveDto {
 
+    private String name;
+
+    private Integer priority;
+
+    private List<MenuSaveDto> menuSaveList;
+
+    private Long storeId;
+
+
+    public MenuGroup toEntity(final Store store) {
+
+        MenuGroup menuGroup = MenuGroup.builder()
+                .name(name)
+                .priority(priority)
+                .store(store)
+                .build();
+
+        if (menuSaveList != null && menuSaveList.size() > 0) {
+            menuSaveList.stream()
+                    .map(msd -> msd.toEntity(menuGroup))
+                    .collect(Collectors.toList());
+        }
+
+        return menuGroup;
+    }
+}
+```
 
