@@ -140,7 +140,7 @@ public class MenuGroupSaveDto {
                 .build();
 
         if (menuSaveList != null && menuSaveList.size() > 0) {
-            menuSaveList.stream().forEach(msd -> msd.toEntity(menuGroup));
+            menuSaveList.forEach(msd -> msd.toEntity(menuGroup));
         }
         
         return menuGroup;
@@ -149,7 +149,7 @@ public class MenuGroupSaveDto {
 ```
 * MenuGroupSaveDto에 MenuSaveDto List가 추가되었고 MenuGroupSaveDto에서 toEntity 호출시 MenuSaveDto의 toEntity를 호출하게 됩니다.  
 * MenuSaveDto의 toEntity에는 MenuGroup에 Menu를 추가하는 로직이 담겨져 있기 때문에 결과적으로 MenuGroup이 영속 상태로 변할때 추가한 Menu도 영속 상태로 변하게 됩니다.  
-* 같은 방법으로 Menu와 MenuOptionGroup 그리고 MenuOption에도 적용해서 메뉴 그룹을 저장할때 메뉴 옵션까지 저장되게끔 바뀌었습니다.  
+* 같은 방법으로 Menu와 MenuOptionGroup 그리고 MenuOption에도 적용해서 메뉴 그룹을 저장할때 메뉴 옵션까지 저장되게끔 바꾸었습니다.  
 
 
 
