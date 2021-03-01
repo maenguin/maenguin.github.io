@@ -29,7 +29,7 @@
 
 추가로 세부사항을 더 분석하겠습니다.  
 * 메뉴 기본 옵션 그룹을 제외한 항목들에는 우선순위가 있어서 주요 메뉴가 먼저 표시됩니다.  
-* 메뉴, 메뉴 기본 옵션, 메뉴 옵션은 품절 여부를 설정 할 수 있습니다.  
+* 메뉴, 메뉴 기본 옵션, 메뉴 옵션은 품절 여부가 표시됩니다.
 * 메뉴 옵션 그룹에는 최대 선택 개수가 있어서 선택 개수를 제한할 수 있습니다.  
 * 메뉴 옵션 그룹을 하나만 선택할 수 있으면 라디오 버튼으로 메뉴 옵션이 구성됩니다.  
 
@@ -98,6 +98,37 @@ public class MenuGroupSaveDto {
 
     private Integer priority;
 
+    public MenuGroup toEntity(final Store store) {
+
+        MenuGroup menuGroup = MenuGroup.builder()
+                .name(name)
+                .priority(priority)
+                .store(store)
+                .build();
+        return menuGroup;
+    }
+}
+```
+* 메뉴 그룹을 저장하는 API입니다.
+* 
+### 수정
+저장을 연쇄적으로 할 수 있게 구현해보니 이번에는 수정을 연쇄적으로 할 수 없을까 란 생각이 들었습니다.  
+저장과 수정을 통합해서 제공할 수 있다면, 클라이언트에서 좀 더 편하게 개발을 할 수 있지 않을까 생각합니다.  
+
+## 리팩토링
+
+### 연쇄 저장
+`영속성 전이`기능을 사용하면 부모 엔티티가 영속 상태로 변할때 자식 엔티티도 같이 영속 상태로 변합니다.  
+이를 이용해 저장 API 구현시 dto에 하위 엔티티 정보를 입력하면 같이 저장되게 하면 어떻게 될까 생각했고 구현해보기로 했습니다.  
+#### MenuGroupSaveDto
+```java
+@Getter
+public class MenuGroupSaveDto {
+
+    private String name;
+
+    private Integer priority;
+
     private List<MenuSaveDto> menuSaveList;
 
     public MenuGroup toEntity(final Store store) {
@@ -109,25 +140,16 @@ public class MenuGroupSaveDto {
                 .build();
 
         if (menuSaveList != null && menuSaveList.size() > 0) {
-            menuSaveList.stream()
-                    .map(msd -> msd.toEntity(menuGroup))
-                    .collect(Collectors.toList());
+            menuSaveList.stream().forEach(msd -> msd.toEntity(menuGroup));
         }
-
+        
         return menuGroup;
     }
 }
 ```
-* 메뉴 그룹을 저장하는 API입니다. `MenuGroupSaveDto`를 보면 메뉴 그룹을 저장하면서 동시에 메뉴를 저장할 수 있도록 `MenuSaveDto`를 입력할 수 있습니다.  
-* 메뉴 그룹과 메뉴는 일대다 관계이고 메뉴는 메뉴그룹의 생명주기에 종속적이도록 설계했습니다. 이를 용이하게 구현하기 위해 `영속성 전이`를 사용했습니다.  
-* 덕분에 메뉴 그룹을 저장하기 위한 dto지만 연쇄적으로 메뉴 -> 메뉴 그룹 옵션 -> 메뉴 옵션을 저장할 수 있습니다. 
-
-### 수정
-저장을 연쇄적으로 할 수 있게 구현해보니 이번에는 수정을 연쇄적으로 할 수 없을까 란 생각이 들었습니다.  
-저장과 수정을 통합해서 제공할 수 있다면, 클라이언트에서 좀 더 편하게 개발을 할 수 있지 않을까 생각합니다.  
-
-
-
+* MenuGroupSaveDto에 MenuSaveDto List가 추가되었고 MenuGroupSaveDto에서 toEntity 호출시 MenuSaveDto의 toEntity를 호출하게 됩니다.  
+* MenuSaveDto의 toEntity에는 MenuGroup에 Menu를 추가하는 로직이 담겨져 있기 때문에 결과적으로 MenuGroup이 영속 상태로 변할때 추가한 Menu도 영속 상태로 변하게 됩니다.  
+* 같은 방법으로 Menu와 MenuOptionGroup 그리고 MenuOption에도 적용해서 메뉴 그룹을 저장할때 메뉴 옵션까지 저장되게끔 바뀌었습니다.  
 
 
 
