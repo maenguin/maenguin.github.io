@@ -43,5 +43,9 @@ Project Structure
 ## Ctrl + Alt + s
 Settings
 
+## Ctrl + w  
+현재 커서에서 점진적으로 하이라이트 범위 넓히기  
+
+
 
 
